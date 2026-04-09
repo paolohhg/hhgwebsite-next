@@ -1,26 +1,145 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 222 22% 7%;
+    --foreground: 210 20% 90%;
+
+    --card: 222 18% 10%;
+    --card-foreground: 210 20% 90%;
+
+    --popover: 222 18% 10%;
+    --popover-foreground: 210 20% 90%;
+
+    --primary: 210 50% 55%;
+    --primary-foreground: 222 22% 7%;
+
+    --secondary: 222 14% 14%;
+    --secondary-foreground: 210 20% 80%;
+
+    --muted: 222 14% 14%;
+    --muted-foreground: 215 15% 50%;
+
+    --accent: 210 50% 55%;
+    --accent-foreground: 222 22% 7%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 222 14% 15%;
+    --input: 222 14% 15%;
+    --ring: 210 50% 55%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 222 22% 7%;
+    --sidebar-foreground: 210 20% 90%;
+    --sidebar-primary: 210 50% 55%;
+    --sidebar-primary-foreground: 222 22% 7%;
+    --sidebar-accent: 222 14% 14%;
+    --sidebar-accent-foreground: 210 20% 80%;
+    --sidebar-border: 222 14% 15%;
+    --sidebar-ring: 210 50% 55%;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Infrastructure beam pattern — layered horizontal structural lines */
+.infra-pattern {
+  position: relative;
+}
+
+.infra-pattern::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent 0%, hsl(210 50% 55% / 0.03) 15%, hsl(210 50% 55% / 0.05) 40%, hsl(210 50% 55% / 0.03) 70%, transparent 100%) 0 30% / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent 5%, hsl(210 50% 55% / 0.02) 20%, hsl(210 50% 55% / 0.04) 55%, transparent 85%) 0 45% / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent 10%, hsl(210 50% 55% / 0.03) 30%, hsl(210 50% 55% / 0.05) 60%, hsl(210 50% 55% / 0.02) 80%, transparent 95%) 0 58% / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent 0%, hsl(210 50% 55% / 0.02) 25%, hsl(210 50% 55% / 0.04) 50%, transparent 75%) 0 72% / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent 15%, hsl(210 50% 55% / 0.03) 35%, hsl(210 50% 55% / 0.04) 65%, transparent 90%) 0 85% / 100% 1px no-repeat;
+}
+
+/* Vertical beam accents at edges */
+.infra-beams {
+  position: relative;
+}
+
+.infra-beams::before,
+.infra-beams::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  pointer-events: none;
+}
+
+.infra-beams::before {
+  left: 8%;
+  background: linear-gradient(to bottom, transparent, hsl(210 50% 55% / 0.04) 30%, hsl(210 50% 55% / 0.06) 50%, hsl(210 50% 55% / 0.04) 70%, transparent);
+}
+
+.infra-beams::after {
+  right: 12%;
+  background: linear-gradient(to bottom, transparent, hsl(210 50% 55% / 0.03) 40%, hsl(210 50% 55% / 0.05) 60%, transparent);
+}
+
+/* Hero radial glow */
+.hero-glow {
+  position: relative;
+}
+
+.hero-glow::after {
+  content: '';
+  position: absolute;
+  top: 8%;
+  left: 3%;
+  width: 55%;
+  height: 65%;
+  background: radial-gradient(ellipse at center, hsl(210 50% 55% / 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Hero bottom gradient for depth */
+.hero-depth {
+  background: linear-gradient(to bottom, hsl(222 22% 7% / 0) 50%, hsl(222 22% 7% / 0.8) 100%);
+}
+
+/* Hero atmospheric image overlay */
+.hero-atmosphere {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 55%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.38;
+  filter: saturate(0.2) brightness(0.5);
+  mask-image: linear-gradient(to left, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 40%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 40%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Deep background gradient */
+.bg-deep-gradient {
+  background: linear-gradient(180deg, hsl(222 22% 7%) 0%, hsl(220 25% 5%) 50%, hsl(222 22% 7%) 100%);
 }
