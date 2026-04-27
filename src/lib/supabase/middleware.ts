@@ -1,0 +1,58 @@
+import { createServerClient } from "@supabase/ssr";
+import { NextResponse, type NextRequest } from "next/server";
+
+export async function updateSession(request: NextRequest) {
+  let response = NextResponse.next({ request });
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value }) =>
+            request.cookies.set(name, value),
+          );
+          response = NextResponse.next({ request });
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options),
+          );
+        },
+      },
+    },
+  );
+
+  // Do not insert code between createServerClient and getUser.
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const { pathname } = request.nextUrl;
+  const isLogin = pathname === "/os/login";
+  const isAuthRoute = pathname.startsWith("/os/auth");
+
+  if (!isLogin && !isAuthRoute && !user) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/os/login";
+    url.search = "";
+    return NextResponse.redirect(url);
+  }
+
+  if (isLogin && user) {
+    const allowlist = (process.env.ALLOWED_EMAILS || "")
+      .split(",")
+      .map((e) => e.trim().toLowerCase())
+      .filter(Boolean);
+    if (user.email && allowlist.includes(user.email.toLowerCase())) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/os";
+      url.search = "";
+      return NextResponse.redirect(url);
+    }
+  }
+
+  return response;
+}

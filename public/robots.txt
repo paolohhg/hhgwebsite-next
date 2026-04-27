@@ -1,16 +1,21 @@
 User-agent: Googlebot
 Allow: /
+Disallow: /os/
 
 User-agent: Bingbot
 Allow: /
+Disallow: /os/
 
 User-agent: Twitterbot
 Allow: /
+Disallow: /os/
 
 User-agent: facebookexternalhit
 Allow: /
+Disallow: /os/
 
 User-agent: *
 Allow: /
+Disallow: /os/
 
 Sitemap: https://heardhospitalitygroup.com/sitemap.xml

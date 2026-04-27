@@ -15,12 +15,9 @@ export const metadata: Metadata = {
     description:
       "AI-powered revenue infrastructure for restaurants, hospitality operators, and food businesses.",
     type: "website",
-    images: ["https://lovable.dev/opengraph-image-p98pqg.png"],
   },
   twitter: {
     card: "summary_large_image",
-    site: "@Lovable",
-    images: ["https://lovable.dev/opengraph-image-p98pqg.png"],
   },
 };
 
