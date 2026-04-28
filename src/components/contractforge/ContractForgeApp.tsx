@@ -184,21 +184,22 @@ Rules:
 </div>`;
 
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
+      const res = await fetch("/api/contractforge/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          messages: [{ role: "user", content: prompt }],
-        }),
+        body: JSON.stringify({ prompt }),
       });
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => ({}));
+        throw new Error(errBody?.error || `Server error (${res.status})`);
+      }
       const data = await res.json();
-      let html: string = data?.content?.[0]?.text || "";
+      let html: string = data?.html || "";
       html = html.replace(/```html/g, "").replace(/```/g, "").trim();
       setGeneratedHTML(html);
-    } catch {
-      setError("Generation failed — check your connection and try again.");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      setError(`Generation failed — ${msg}`);
     } finally {
       setIsGenerating(false);
     }
