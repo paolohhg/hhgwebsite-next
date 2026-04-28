@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, ChevronDown } from "lucide-react";
 
 const productItems = [
-  { label: "Heard Sports Intelligence", href: "https://hsi.heardhospitalitygroup.com", external: true },
-  { label: "Restaurant Revenue Systems", href: "/revenue-systems", external: false },
+  { label: "Heard OS", href: "/heard-os" },
+  { label: "ContractForge", href: "/contract-forge" },
 ];
 
 const infraModules = [
@@ -147,7 +147,7 @@ export default function StickyNav() {
           {productItems.map((m) => (
             <button
               key={m.href}
-              onClick={() => { handleNav(m.href, m.external); setMobileOpen(false); }}
+              onClick={() => { handleNav(m.href); setMobileOpen(false); }}
               className="text-sm text-muted-foreground hover:text-foreground text-left pl-3"
             >
               {m.label}

@@ -8,6 +8,7 @@ const links = [
   { label: "AI Revenue Systems", href: "/ai-revenue-systems" },
   { label: "Consulting", href: "/hospitality-ai-consulting" },
   { label: "Heard OS", href: "/heard-os" },
+  { label: "ContractForge", href: "/contract-forge" },
   { label: "Contact", href: "/#assessment" },
 ];
 
