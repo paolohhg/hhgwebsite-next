@@ -29,7 +29,7 @@ export async function POST(request: Request) {
   try {
     const client = new Anthropic();
     const response = await client.messages.create({
-      model: "claude-sonnet-4-6",
+      model: "claude-haiku-4-5",
       max_tokens: 4000,
       messages: [{ role: "user", content: prompt }],
     });
