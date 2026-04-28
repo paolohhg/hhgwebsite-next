@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
 
-export const maxDuration = 60;
+export const maxDuration = 300;
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     const client = new Anthropic();
     const response = await client.messages.create({
       model: "claude-sonnet-4-6",
-      max_tokens: 8000,
+      max_tokens: 4000,
       messages: [{ role: "user", content: prompt }],
     });
 
