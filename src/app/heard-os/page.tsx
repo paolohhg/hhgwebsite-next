@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   title: "Heard OS — Inventory Control for Restaurants | Heard Hospitality Group",
   description:
     "Heard OS v1 is a zone-based inventory control platform built for independent restaurant operators. Track counts, set par levels, export data, and build consistency.",
+  alternates: {
+    canonical: "https://heardhospitalitygroup.com/heard-os",
+  },
 };
 
 const faqSchema = {

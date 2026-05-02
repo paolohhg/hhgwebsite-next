@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: "ContractForge — AI Contract Generator | Heard Hospitality Group",
   description:
     "Generate branded, professional contracts in seconds. Service agreements, NDAs, catering contracts, and more — powered by AI with your logo and company info built in.",
+  alternates: {
+    canonical: "https://heardhospitalitygroup.com/contract-forge",
+  },
 };
 
 export default function ContractForgePage() {
