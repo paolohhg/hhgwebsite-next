@@ -3,18 +3,20 @@ import { ArrowRight } from "lucide-react";
 
 export default function HeardOSFinalCTA() {
   return (
-    <section className="py-20 px-6 border-t border-border">
+    <section id="contact" className="py-20 px-6 border-t border-border">
       <div className="max-w-3xl mx-auto text-center">
-        <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-4">Start With Control.</h2>
+        <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-4">Need a Workflow System?</h2>
         <p className="text-sm text-muted-foreground mb-8 max-w-lg mx-auto">
-          If you can't measure inventory consistently, everything downstream gets noisier.
+          If contracts, pricing, lead response, or launch infrastructure are being handled manually, send the friction point.
         </p>
         <div className="flex flex-wrap justify-center gap-3 mb-4">
-          <Button size="lg" className="gap-2">
-            Launch Heard OS <ArrowRight size={16} />
+          <Button size="lg" className="gap-2" asChild>
+            <a href="mailto:info@heardhospitalitygroup.com">
+              Contact HHG <ArrowRight size={16} />
+            </a>
           </Button>
-          <Button variant="outline" size="lg">
-            Begin Infrastructure Review
+          <Button variant="outline" size="lg" asChild>
+            <a href="/contract-forge">Open ContractForge</a>
           </Button>
         </div>
         <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">

@@ -5,11 +5,11 @@ import { ArrowRight } from "lucide-react";
 const scrollTo = (id: string) => document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
 
 const modules = [
-  { title: "Catering Revenue Architecture", desc: "Structured inquiry capture, follow-up sequencing, and deposit workflows.", href: "#catering" },
-  { title: "AI Visibility Architecture", desc: "Schema, structured data, and AI-readable presence.", href: "#ai-search" },
-  { title: "Retention Infrastructure", desc: "Automated guest follow-up and reactivation systems.", href: "#reactivation" },
-  { title: "Operational Control Layer", desc: "Backend automation replacing manual workflows.", href: "#ops-automation" },
-  { title: "Heard OS", desc: "Operator-focused inventory and operational control.", href: "#heard-os" },
+  { title: "ContractForge", desc: "Branded contract drafts for catering, vendors, NDAs, and service work.", href: "#contracts" },
+  { title: "Pan Pricer", desc: "Planned catering pricing calculator for cost, yield, and margin structure.", href: "#pricing" },
+  { title: "Business-in-a-Box", desc: "Food business launch systems for catering, meal prep, and food trucks.", href: "#business-box" },
+  { title: "Lead Response Workflows", desc: "Forms, routing, and automated replies that prevent missed inquiries.", href: "#workflow" },
+  { title: "Live Test Environments", desc: "Systems informed by LASA HTX and Fit Kitchen Meals operations.", href: "#field-tested" },
 ];
 
 export default function HeroSection() {
@@ -25,16 +25,16 @@ export default function HeroSection() {
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="max-w-3xl">
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.08] mb-6">
-            Revenue Infrastructure<br />
-            <span className="text-foreground">for Hospitality Businesses.</span>
+            Hospitality Systems<br />
+            <span className="text-foreground">for Food Operators.</span>
           </h1>
-          <p className="text-xl text-muted-foreground font-medium mb-3">Stabilize first. Then scale.</p>
+          <p className="text-xl text-muted-foreground font-medium mb-3">Less friction. More structure.</p>
           <p className="text-muted-foreground max-w-xl mb-16">
-            Revenue inconsistency is <span className="text-primary">structural.</span>
+            Heard Hospitality Group builds practical tools and workflows for contracts, pricing, lead response, and food business operations.
           </p>
         </div>
 
-        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-6" id="solutions">Infrastructure Modules</p>
+        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-6" id="solutions">System Modules</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
           {modules.map((m) => (
@@ -50,10 +50,10 @@ export default function HeroSection() {
         </div>
 
         <Button onClick={() => scrollTo("#assessment")} size="lg" className="gap-2">
-          Begin Infrastructure Review <ArrowRight size={16} />
+          Review Your System Gaps <ArrowRight size={16} />
         </Button>
         <div className="mt-4">
-          <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Independent Infrastructure Operator</p>
+          <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Operator-led systems builder</p>
           <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Based in Houston, Texas</p>
         </div>
       </div>

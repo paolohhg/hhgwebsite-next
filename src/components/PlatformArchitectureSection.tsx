@@ -1,16 +1,16 @@
 const layers = [
-  "Heard OS",
-  "Data Layer",
-  "Automation Layer",
-  "Revenue Modules",
-  "Reporting + Visibility",
+  "Operator Intake",
+  "Structured Data",
+  "Automation",
+  "Documents + Pricing",
+  "Lead Response",
 ];
 
 export default function PlatformArchitectureSection() {
   return (
     <section className="infra-pattern py-20 px-6 border-t border-border">
       <div className="max-w-2xl mx-auto">
-        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-8 text-center">Platform Architecture</p>
+        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-8 text-center">Workflow Architecture</p>
         <div className="flex flex-col items-center gap-0">
           {layers.map((layer, i) => (
             <div key={layer} className="flex flex-col items-center">

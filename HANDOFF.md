@@ -65,7 +65,7 @@ All three coexist under the same Next.js app. Marketing pages use the dark `bg-d
 
 ## Environment variables
 
-All four below must be set in **Vercel → hhgwebsite-next → Settings → Environment Variables → Production** AND in local `.env.local` for dev.
+The required variables below must be set in **Vercel → hhgwebsite-next → Settings → Environment Variables → Production** AND in local `.env.local` for dev.
 
 | Name | Purpose | Where to source value | What breaks if missing |
 |---|---|---|---|
@@ -73,6 +73,11 @@ All four below must be set in **Vercel → hhgwebsite-next → Settings → Envi
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon public key (RLS-bound) | Supabase dashboard → Settings → API → "anon public" | Same — `/os` 500s |
 | `ALLOWED_EMAILS` | Comma-separated email allowlist for `/os` sign-in | Manually edited; currently `paolo@heardhospitalitygroup.com,chefmel@heardhospitalitygroup.com` | Allowlist enforcement fails-open to "deny all" — nobody can sign in |
 | `ANTHROPIC_API_KEY` | Server-side key for ContractForge | `console.anthropic.com` → Settings → API Keys | `/api/contractforge/generate` returns 500 with explicit error |
+| `RESEND_API_KEY` | Server-side key for contact-form notification + autoresponder email | Resend dashboard → API Keys | `/api/contact` returns 500 with explicit error |
+| `RESEND_FROM_EMAIL` | Verified sender used by Resend, e.g. `Heard Hospitality Group <info@heardhospitalitygroup.com>` | Resend verified domain/sender | `/api/contact` returns 500 with explicit error |
+| `CONTACT_TO_EMAIL` | Internal recipient for website inquiries | Usually `paolo@heardhospitalitygroup.com` or `info@heardhospitalitygroup.com` | Defaults to `info@heardhospitalitygroup.com` if missing |
+| `CONTACT_AUTOREPLY_FROM_EMAIL` | Optional sender for autoresponder; falls back to `RESEND_FROM_EMAIL` | Resend verified domain/sender | Autoresponder uses `RESEND_FROM_EMAIL` if missing |
+| `CONTACT_AUTOREPLY_ENABLED` | Optional toggle; set to `false` to disable submitter autoresponder | Manual | Autoresponder sends by default |
 
 **Never** put `NEXT_PUBLIC_` on `ANTHROPIC_API_KEY` — that prefix exposes the var to the browser bundle. The current var is correctly server-only.
 

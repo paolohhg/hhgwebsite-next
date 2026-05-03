@@ -4,9 +4,9 @@ import Footer from "@/components/Footer";
 import ContractForgeApp from "@/components/contractforge/ContractForgeApp";
 
 export const metadata: Metadata = {
-  title: "ContractForge — AI Contract Generator | Heard Hospitality Group",
+  title: "ContractForge - AI Contract Generator | Heard Hospitality Group",
   description:
-    "Generate branded, professional contracts in seconds. Service agreements, NDAs, catering contracts, and more — powered by AI with your logo and company info built in.",
+    "Generate branded contract drafts for catering agreements, vendor agreements, NDAs, service contracts, and other operator workflows.",
   alternates: {
     canonical: "https://heardhospitalitygroup.com/contract-forge",
   },

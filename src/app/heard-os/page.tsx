@@ -11,9 +11,9 @@ import HeardOSFinalCTA from "@/components/heardos/HeardOSFinalCTA";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Heard OS — Inventory Control for Restaurants | Heard Hospitality Group",
+  title: "Heard OS - Operator Systems Direction | Heard Hospitality Group",
   description:
-    "Heard OS v1 is a zone-based inventory control platform built for independent restaurant operators. Track counts, set par levels, export data, and build consistency.",
+    "Heard OS is the internal operating system direction behind HHG's work to structure projects, tasks, assets, and operator workflows.",
   alternates: {
     canonical: "https://heardhospitalitygroup.com/heard-os",
   },
@@ -28,39 +28,23 @@ const faqSchema = {
       name: "What is Heard OS?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Heard OS is an inventory control platform built for independent restaurant operators. It provides zone-based count tracking, par level visibility, count history, and export capabilities.",
+        text: "Heard OS is the operating system direction behind HHG's internal coordination and operator workflow thinking. Public product packaging is still being defined.",
       },
     },
     {
       "@type": "Question",
-      name: 'What is a "zone-based" inventory?',
+      name: "Is Heard OS a public inventory product today?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Zone-based inventory assigns items to physical storage locations — walk-in, dry storage, freezer, bar — so counts match how your kitchen actually operates.",
+        text: "The current public direction is being clarified. HHG is using Heard OS language for internal operating structure and future workflow systems, but this page avoids promising a public inventory product or plan availability.",
       },
     },
     {
       "@type": "Question",
-      name: "Can I export counts?",
+      name: "What kinds of workflows inform Heard OS?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes. Heard OS supports CSV exports for vendors, spreadsheets, or accounting integration.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Can multiple staff count at once?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Multi-user counting with controlled permissions is available on the Pro plan.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Is this connected to HHG infrastructure installs?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes. Heard OS is the foundation layer of the HHG revenue infrastructure platform. The Infrastructure plan includes full HHG install with data layer and automation integration.",
+        text: "HHG's operating context includes catering operations, meal prep systems, high-volume kitchen workflows, third-party delivery optimization, revenue management, and margin management.",
       },
     },
   ],

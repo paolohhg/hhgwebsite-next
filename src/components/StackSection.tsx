@@ -1,15 +1,15 @@
-const hospitality = [
-  "Catering Revenue Architecture",
-  "Retention Infrastructure",
-  "Website Revenue Optimization",
-  "Operations Automation",
+const productDirection = [
+  "ContractForge",
+  "Pan Pricer (planned)",
+  "Business-in-a-Box Systems",
+  "Lead Response Workflows",
 ];
 
-const ai = [
-  "AI SEO + Schema Implementation",
-  "Structured Data Architecture",
-  "Search Visibility Optimization",
-  "Automated Revenue Workflows",
+const workflowLayer = [
+  "Contract draft generation",
+  "Pricing inputs and yield logic",
+  "Forms and automated response",
+  "Workflow routing",
 ];
 
 function StackColumn({ title, items }: { title: string; items: string[] }) {
@@ -32,13 +32,13 @@ export default function StackSection() {
   return (
     <section className="infra-pattern py-20 px-6 border-t border-border">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-8">The Revenue Infrastructure Stack</h2>
+        <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-8">The HHG Systems Stack</h2>
         <div className="grid md:grid-cols-2 gap-4 mb-8">
-          <StackColumn title="Hospitality Stack" items={hospitality} />
-          <StackColumn title="AI Stack" items={ai} />
+          <StackColumn title="Product Direction" items={productDirection} />
+          <StackColumn title="Workflow Layer" items={workflowLayer} />
         </div>
         <p className="text-muted-foreground text-sm text-center">
-          Each layer connects. Each layer reinforces the next.
+          Each layer handles a core business function that operators usually patch together by hand.
         </p>
       </div>
     </section>

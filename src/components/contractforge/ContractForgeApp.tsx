@@ -214,13 +214,13 @@ Rules:
       <div className="max-w-4xl mx-auto px-6 mb-12 text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] font-medium text-white/50 tracking-wide mb-6">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          AI-Powered · Enterprise-Ready
+          Contract Drafting Tool
         </div>
         <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight leading-[1.1] mb-4">
           Contract<span className="text-white/40">Forge</span>
         </h1>
         <p className="text-base sm:text-lg text-white/50 max-w-xl mx-auto leading-relaxed">
-          Generate branded, professional contracts in seconds — not hours. Powered by AI with your logo, terms, and legal clauses built in.
+          Generate formatted, branded contract drafts from your logo, terms, parties, and clauses. Built for catering, vendor, NDA, and service agreement workflows.
         </p>
       </div>
 

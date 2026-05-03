@@ -1,10 +1,10 @@
-const steps = ["Traffic", "Structured Funnel", "CRM & Data Capture", "Automation", "Retention Loop", "Repeat Revenue"];
+const steps = ["Operator Need", "Structured Intake", "Pricing / Contract Logic", "Lead Response", "Workflow Handoff", "Repeatable System"];
 
 export default function MachineSection() {
   return (
     <section className="infra-pattern py-20 px-6 border-t border-border">
       <div className="max-w-2xl mx-auto text-center">
-        <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-12">How The Machine Works</h2>
+        <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-12">How The System Works</h2>
         <div className="flex flex-col items-center gap-0">
           {steps.map((step, i) => (
             <div key={step} className="flex flex-col items-center">
@@ -15,7 +15,7 @@ export default function MachineSection() {
             </div>
           ))}
         </div>
-        <p className="text-muted-foreground text-sm mt-10">When systems connect, instability decreases.</p>
+        <p className="text-muted-foreground text-sm mt-10">When the workflow is defined, operators spend less time rebuilding the same process.</p>
       </div>
     </section>
   );

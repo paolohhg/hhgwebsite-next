@@ -11,23 +11,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
-
-const WEBHOOK_URL = "https://hook.us2.make.com/5cvh24j98rp32txtb9vweps8ja4ps3o2";
 
 const interestOptions = [
-  "Infrastructure Review",
-  "Heard OS",
-  "Catering Revenue Architecture",
-  "AI Visibility",
-  "Retention Infrastructure",
-  "Operational Control",
+  "System Gap Review",
+  "ContractForge",
+  "Pan Pricer",
+  "Business-in-a-Box Systems",
+  "Lead Response Workflow",
+  "Hospitality Systems Consulting",
 ];
 
 export default function ContactSection() {
-  const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
     name: "",
     business: "",
@@ -45,17 +42,23 @@ export default function ContactSection() {
     e.preventDefault();
     if (!form.name || !form.email || !form.interest || !form.monthlyRevenue) return;
     setLoading(true);
+    setError("");
     try {
-      await fetch(WEBHOOK_URL, {
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
+      if (!response.ok) {
+        const body = await response.json().catch(() => ({}));
+        throw new Error(body?.error || "Unable to send message");
+      }
+      setSubmitted(true);
     } catch {
-      // silent — webhook may not be configured yet
+      setError("Something went wrong sending the form. Text or email is fastest while we fix it.");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-    setSubmitted(true);
   };
 
   return (
@@ -65,7 +68,6 @@ export default function ContactSection() {
           Contact
         </span>
 
-        {/* Direct access buttons */}
         <div className="flex flex-wrap gap-3 mb-6">
           <Button asChild variant="outline" size="lg">
             <a href="sms:+18325108440">Text Us</a>
@@ -93,7 +95,6 @@ export default function ContactSection() {
           Text is fastest.
         </p>
 
-        {/* Contact Form */}
         {submitted ? (
           <div className="border border-border rounded-lg p-8 max-w-xl">
             <p className="text-sm text-foreground font-medium">Received.</p>
@@ -137,12 +138,12 @@ export default function ContactSection() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Under $25,000">Under $25,000</SelectItem>
-                  <SelectItem value="$25,000–$75,000">$25,000–$75,000</SelectItem>
+                  <SelectItem value="$25,000-$75,000">$25,000-$75,000</SelectItem>
                   <SelectItem value="$75,000+">$75,000+</SelectItem>
                 </SelectContent>
               </Select>
               <p className="text-[10px] text-muted-foreground/60 mt-1">
-                Designed for independent operators serious about stabilizing cash flow.
+                Used only to understand operator context before replying.
               </p>
             </div>
 
@@ -202,6 +203,11 @@ export default function ContactSection() {
             <Button type="submit" disabled={loading} size="lg">
               {loading ? "Sending..." : "Submit"}
             </Button>
+            {error && (
+              <p className="text-sm text-destructive" role="alert">
+                {error}
+              </p>
+            )}
           </form>
         )}
       </div>

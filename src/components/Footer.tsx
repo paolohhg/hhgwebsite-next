@@ -5,11 +5,11 @@ import { useRouter, usePathname } from "next/navigation";
 const links = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about-heard-hospitality-group" },
-  { label: "AI Revenue Systems", href: "/ai-revenue-systems" },
+  { label: "Systems", href: "/ai-revenue-systems" },
   { label: "Consulting", href: "/hospitality-ai-consulting" },
   { label: "Heard OS", href: "/heard-os" },
   { label: "ContractForge", href: "/contract-forge" },
-  { label: "Contact", href: "/#assessment" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export default function Footer() {
@@ -42,7 +42,7 @@ export default function Footer() {
             Hospitality Group
           </span>
         </div>
-        <p className="text-sm text-muted-foreground mb-6">AI-Powered Revenue Infrastructure for Hospitality Businesses.</p>
+        <p className="text-sm text-muted-foreground mb-6">Practical systems and workflow infrastructure for food and service operators.</p>
         <div className="flex flex-wrap gap-4 mb-8">
           {links.map((l) => (
             <button
@@ -54,7 +54,7 @@ export default function Footer() {
             </button>
           ))}
         </div>
-        {/* Contact block */}
+
         <div className="mb-8">
           <span className="block text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70 mb-3">
             Contact
@@ -72,13 +72,13 @@ export default function Footer() {
             832-510-8440
           </a>
           <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground/50 mt-3">
-            Independent Infrastructure Operator · Based in Houston, Texas
+            Operator-led systems builder - Based in Houston, Texas
           </p>
         </div>
 
         <div className="flex flex-col sm:flex-row justify-between text-xs text-muted-foreground border-t border-border pt-6">
           <span>Based in Houston, Texas</span>
-          <span>© 2026 Heard Hospitality Group</span>
+          <span>Copyright 2026 Heard Hospitality Group</span>
         </div>
       </div>
     </footer>

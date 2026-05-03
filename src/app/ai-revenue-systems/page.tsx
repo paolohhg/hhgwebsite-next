@@ -6,20 +6,20 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "AI Revenue Systems for Restaurants | Heard Hospitality Group",
+  title: "Hospitality Systems for Food Operators | Heard Hospitality Group",
   description:
-    "AI-powered revenue systems for restaurants including AI SEO optimization, catering funnels, automation workflows, lead capture, and hospitality CRM infrastructure.",
+    "Practical hospitality systems for contracts, catering pricing, lead response, and food business launch workflows.",
   alternates: {
     canonical: "https://heardhospitalitygroup.com/ai-revenue-systems",
   },
 };
 
 const systems = [
-  { title: "AI SEO Optimization", desc: "Structure your digital presence so AI platforms and search engines surface your business first." },
-  { title: "Catering Funnel Systems", desc: "Capture, qualify, and convert catering inquiries with automated follow-up and deposit workflows." },
-  { title: "Restaurant Automation Workflows", desc: "Replace manual processes with backend systems that run without staff intervention." },
-  { title: "Lead Capture Infrastructure", desc: "Turn website traffic into qualified pipeline with forms, segmentation, and CRM routing." },
-  { title: "Hospitality CRM Systems", desc: "Track every guest, inquiry, and opportunity across locations in one operational view." },
+  { title: "ContractForge", desc: "A live AI-assisted contract generation tool for branded catering agreements, vendor agreements, NDAs, and service contracts." },
+  { title: "Pan Pricer (planned)", desc: "A planned catering pricing calculator for ingredient cost input, portion and yield math, and suggested pricing outputs." },
+  { title: "Business-in-a-Box Systems", desc: "System packages under development for catering, meal prep, and food truck businesses, including landing pages, CTAs, forms, and response workflows." },
+  { title: "Lead Response Infrastructure", desc: "Forms, routing, and automated reply workflows built so inbound interest does not sit unanswered." },
+  { title: "Operator Dashboards", desc: "Lightweight operational views for tracking the work that usually gets scattered across spreadsheets and inboxes." },
 ];
 
 const faqSchema = {
@@ -28,23 +28,23 @@ const faqSchema = {
   mainEntity: [
     {
       "@type": "Question",
-      name: "What is AI SEO for restaurants?",
-      acceptedAnswer: { "@type": "Answer", text: "AI SEO for restaurants is the practice of structuring a restaurant's digital presence — including schema markup, content architecture, and location data — so that AI-powered search platforms like Google SGE, ChatGPT, and Perplexity can understand, surface, and recommend the business." },
+      name: "What does Heard Hospitality Group build?",
+      acceptedAnswer: { "@type": "Answer", text: "Heard Hospitality Group builds practical systems, tools, and workflow infrastructure for food and service operators, including contract generation, pricing structure, lead response, and food business launch systems." },
     },
     {
       "@type": "Question",
-      name: "How does AI search affect restaurant marketing?",
-      acceptedAnswer: { "@type": "Answer", text: "AI search is replacing traditional keyword-based results with conversational answers. Restaurants that structure their data for AI readability get surfaced in recommendations, while those that don't become invisible to a growing share of search traffic." },
+      name: "Is ContractForge available now?",
+      acceptedAnswer: { "@type": "Answer", text: "Yes. ContractForge is a live web-based AI contract generation tool that helps users create formatted branded contract drafts from structured inputs." },
     },
     {
       "@type": "Question",
-      name: "What is a catering funnel system?",
-      acceptedAnswer: { "@type": "Answer", text: "A catering funnel system is an automated workflow that captures catering inquiries, qualifies leads by event type and budget, sequences follow-up communications, and routes qualified opportunities to a booking or deposit flow." },
+      name: "Is Pan Pricer available now?",
+      acceptedAnswer: { "@type": "Answer", text: "Pan Pricer is planned. It is intended to help food operators build baseline catering pricing structure using ingredient costs, portions, yields, and suggested pricing outputs." },
     },
     {
       "@type": "Question",
-      name: "How can restaurants increase catering revenue online?",
-      acceptedAnswer: { "@type": "Answer", text: "Restaurants increase catering revenue online by building dedicated landing pages, implementing structured inquiry forms, automating follow-up sequences, offering transparent package pricing, and using CRM tools to track pipeline and close rates." },
+      name: "What are Business-in-a-Box Systems?",
+      acceptedAnswer: { "@type": "Answer", text: "Business-in-a-Box Systems are a product direction under development for preconfigured food business launch systems, starting with catering, meal prep, and food truck categories." },
     },
   ],
 };
@@ -61,13 +61,13 @@ export default function AIRevenueSystemsPage() {
       <main className="pt-28 pb-20 px-6">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-            AI Revenue Systems for Restaurants
+            Hospitality Systems for Food Operators
           </h1>
           <p className="text-muted-foreground text-lg mb-14 max-w-2xl">
-            These systems help restaurants increase catering sales and visibility in both Google search and AI search platforms.
+            HHG builds modular tools for the core business functions that food operators usually handle with scattered documents, spreadsheets, forms, and follow-up.
           </p>
 
-          <h2 className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-6">What We Build</h2>
+          <h2 className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-6">What HHG Is Building</h2>
 
           <div className="space-y-6 mb-16">
             {systems.map((s) => (
@@ -78,7 +78,6 @@ export default function AIRevenueSystemsPage() {
             ))}
           </div>
 
-          {/* FAQ visual section */}
           <section className="mb-16">
             <h2 className="text-xl font-semibold text-foreground mb-6">Frequently Asked Questions</h2>
             <div className="space-y-5">
@@ -91,13 +90,12 @@ export default function AIRevenueSystemsPage() {
             </div>
           </section>
 
-          {/* Internal links */}
           <div className="flex flex-wrap gap-3 border-t border-border pt-10">
             <Button asChild variant="outline" size="sm">
-              <Link href="/about-heard-hospitality-group">About HHG <ArrowRight size={14} /></Link>
+              <Link href="/contract-forge">Open ContractForge <ArrowRight size={14} /></Link>
             </Button>
             <Button asChild variant="outline" size="sm">
-              <Link href="/hospitality-ai-consulting">Book Consulting <ArrowRight size={14} /></Link>
+              <Link href="/#contact">Contact HHG <ArrowRight size={14} /></Link>
             </Button>
           </div>
         </div>

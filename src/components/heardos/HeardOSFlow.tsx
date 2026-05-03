@@ -1,10 +1,10 @@
-const steps = ["Set Zones", "Add Items", "Count Fast", "Compare to Par", "Export", "Repeat Weekly"];
+const steps = ["Define Project", "Assign Owner", "Track Tasks", "Inventory Assets", "Clarify Next Action", "Repeat Weekly"];
 
 export default function HeardOSFlow() {
   return (
     <section id="how-it-works" className="py-16 px-6 border-t border-border">
       <div className="max-w-3xl mx-auto">
-        <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-10">How Heard OS Works</h2>
+        <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-10">How The Internal System Works</h2>
         <div className="flex flex-col items-start">
           {steps.map((step, i) => (
             <div key={step} className="flex items-center gap-4">
@@ -18,7 +18,7 @@ export default function HeardOSFlow() {
             </div>
           ))}
         </div>
-        <p className="text-sm text-muted-foreground mt-8">Counts should take minutes, not hours.</p>
+        <p className="text-sm text-muted-foreground mt-8">The goal is simple: keep work tied to the business function it supports.</p>
       </div>
     </section>
   );

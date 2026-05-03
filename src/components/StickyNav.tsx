@@ -6,19 +6,19 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, ChevronDown } from "lucide-react";
 
 const productItems = [
-  { label: "Heard OS", href: "/heard-os" },
   { label: "ContractForge", href: "/contract-forge" },
+  { label: "Heard OS", href: "/heard-os" },
 ];
 
-const infraModules = [
-  { label: "Catering Revenue Architecture", href: "/#catering" },
-  { label: "AI Visibility Architecture", href: "/#ai-search" },
-  { label: "Retention Infrastructure", href: "/#reactivation" },
-  { label: "Operational Control Layer", href: "/#ops-automation" },
+const systemModules = [
+  { label: "Contract Systems", href: "/#contracts" },
+  { label: "Pricing Structure", href: "/#pricing" },
+  { label: "Business-in-a-Box", href: "/#business-box" },
+  { label: "Workflow Infrastructure", href: "/#workflow" },
 ];
 
 const navLinks = [
-  { label: "AI Revenue Systems", href: "/ai-revenue-systems" },
+  { label: "Systems", href: "/ai-revenue-systems" },
   { label: "Consulting", href: "/hospitality-ai-consulting" },
   { label: "About", href: "/about-heard-hospitality-group" },
 ];
@@ -104,7 +104,6 @@ export default function StickyNav() {
       }`}
     >
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Wordmark */}
         <button onClick={() => handleNav("/")} className="text-left shrink-0">
           <span className="block text-foreground font-semibold text-base tracking-[0.08em] uppercase leading-none">
             HEARD
@@ -115,10 +114,9 @@ export default function StickyNav() {
           </span>
         </button>
 
-        {/* Desktop */}
         <div className="hidden md:flex items-center gap-5">
           {renderDropdown("Products", productItems, productsRef, "products")}
-          {renderDropdown("Infrastructure", infraModules, dropdownRef, "infra")}
+          {renderDropdown("Systems", systemModules, dropdownRef, "systems")}
 
           {navLinks.map((l) => (
             <button
@@ -129,18 +127,16 @@ export default function StickyNav() {
               {l.label}
             </button>
           ))}
-          <Button size="sm" onClick={() => handleNav("/#assessment")}>
+          <Button size="sm" onClick={() => handleNav("/#contact")}>
             Contact
           </Button>
         </div>
 
-        {/* Mobile toggle */}
         <button className="md:hidden text-foreground" onClick={() => setMobileOpen(!mobileOpen)}>
           {mobileOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
-      {/* Mobile menu */}
       {mobileOpen && (
         <div className="md:hidden bg-background/95 backdrop-blur-md border-b border-border px-6 pb-4 flex flex-col gap-3">
           <p className="text-xs text-muted-foreground uppercase tracking-wider pt-2">Products</p>
@@ -154,8 +150,8 @@ export default function StickyNav() {
             </button>
           ))}
           <div className="h-px bg-border my-1" />
-          <p className="text-xs text-muted-foreground uppercase tracking-wider">Infrastructure</p>
-          {infraModules.map((m) => (
+          <p className="text-xs text-muted-foreground uppercase tracking-wider">Systems</p>
+          {systemModules.map((m) => (
             <button
               key={m.href}
               onClick={() => { handleNav(m.href); setMobileOpen(false); }}
@@ -174,7 +170,7 @@ export default function StickyNav() {
               {l.label}
             </button>
           ))}
-          <Button size="sm" onClick={() => { handleNav("/#assessment"); setMobileOpen(false); }}>
+          <Button size="sm" onClick={() => { handleNav("/#contact"); setMobileOpen(false); }}>
             Contact
           </Button>
         </div>

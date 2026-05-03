@@ -26,7 +26,7 @@ export default function AnchorSection({ id, title, description, bullets }: Ancho
           ))}
         </ul>
         <Button onClick={() => scrollTo("#assessment")} size="lg" className="gap-2">
-          Begin Infrastructure Review <ArrowRight size={16} />
+          Review Your System Gaps <ArrowRight size={16} />
         </Button>
       </div>
     </section>

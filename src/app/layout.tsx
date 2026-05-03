@@ -6,14 +6,14 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Heard Hospitality Group | AI Revenue Systems for Restaurants",
+  title: "Heard Hospitality Group | Hospitality Systems for Operators",
   description:
-    "Heard Hospitality Group builds AI-powered revenue infrastructure for restaurants and hospitality brands.",
+    "Heard Hospitality Group builds practical systems, tools, and workflow infrastructure for food and service operators.",
   authors: [{ name: "Heard Hospitality Group" }],
   openGraph: {
-    title: "Heard Hospitality Group | AI Revenue Systems for Restaurants",
+    title: "Heard Hospitality Group | Hospitality Systems for Operators",
     description:
-      "AI-powered revenue infrastructure for restaurants, hospitality operators, and food businesses.",
+      "Practical systems, tools, and workflow infrastructure for hospitality, food, and service operators.",
     type: "website",
   },
   twitter: {

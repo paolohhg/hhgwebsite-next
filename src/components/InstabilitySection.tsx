@@ -1,18 +1,18 @@
 const bullets = [
-  "Catering inquiries without structured follow-up",
-  "Visibility gaps in AI-driven search",
-  "Manual inventory tracking",
-  "No automated guest retention loop",
-  "Revenue decisions without backend data",
+  "No standardized contract process",
+  "Inconsistent or incorrect pricing",
+  "Missed or delayed lead response",
+  "No clear sales funnel",
+  "Fragmented workflows across too many tools",
 ];
 
 export default function InstabilitySection() {
   return (
     <section className="infra-pattern py-20 px-6 border-t border-border">
       <div className="max-w-3xl mx-auto">
-        <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-3">Where Instability Begins</h2>
+        <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-3">Where Friction Builds</h2>
         <p className="text-muted-foreground mb-8">
-          Revenue instability is structural.
+          Most operator problems are not isolated. They show up where the workflow is missing.
         </p>
         <ul className="space-y-3 mb-8">
           {bullets.map((b) => (
@@ -22,7 +22,7 @@ export default function InstabilitySection() {
             </li>
           ))}
         </ul>
-        <p className="text-muted-foreground text-sm">Revenue stability requires infrastructure.</p>
+        <p className="text-muted-foreground text-sm">Operational stability requires systems that can be repeated.</p>
       </div>
     </section>
   );
