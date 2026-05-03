@@ -13,6 +13,7 @@ export async function GET(request: Request) {
   const supabase = await createClient();
   const { error } = await supabase.auth.exchangeCodeForSession(code);
   if (error) {
+    console.error("[hhg-os-auth-callback]", error.message);
     return NextResponse.redirect(`${origin}/os/login?error=auth_failed`);
   }
 
