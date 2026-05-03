@@ -12,6 +12,18 @@ function isAllowed(email: string) {
   return allowlist.includes(email.toLowerCase());
 }
 
+function getRequestOrigin(h: Headers) {
+  const forwardedHost = h.get("x-forwarded-host");
+  const host = forwardedHost || h.get("host");
+  if (!host) return "";
+
+  const forwardedProto = h.get("x-forwarded-proto");
+  const isLocalhost = host.startsWith("localhost") || host.startsWith("127.0.0.1");
+  const proto = forwardedProto || (isLocalhost ? "http" : "https");
+
+  return `${proto}://${host}`;
+}
+
 export async function sendMagicLink(formData: FormData) {
   const email = String(formData.get("email") || "")
     .trim()
@@ -24,9 +36,7 @@ export async function sendMagicLink(formData: FormData) {
 
   const supabase = await createClient();
   const h = await headers();
-  const host = h.get("host");
-  const proto = h.get("x-forwarded-proto") || "https";
-  const origin = host ? `${proto}://${host}` : "";
+  const origin = getRequestOrigin(h);
 
   const { error } = await supabase.auth.signInWithOtp({
     email,
