@@ -27,7 +27,7 @@ export async function GET(request: Request) {
 
   if (!user?.email || !allowlist.includes(user.email.toLowerCase())) {
     await supabase.auth.signOut();
-    return NextResponse.redirect(`${origin}/os/login?error=not_allowed`);
+    return NextResponse.redirect(`${origin}/os/login?error=unauthorized`);
   }
 
   return NextResponse.redirect(`${origin}${next}`);

@@ -60,7 +60,7 @@ export default async function LoginPage({
             </button>
             {error ? (
               <p className="font-bold uppercase tracking-wider text-xs pt-3">
-                {error === "not_allowed"
+                {error === "unauthorized"
                   ? "Access denied. This email is not authorized."
                   : "Sign-in failed. Try again."}
               </p>

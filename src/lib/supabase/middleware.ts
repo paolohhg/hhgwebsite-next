@@ -33,6 +33,10 @@ export async function updateSession(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isLogin = pathname === "/os/login";
   const isAuthRoute = pathname.startsWith("/os/auth");
+  const allowlist = (process.env.ALLOWED_EMAILS || "")
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
 
   if (!isLogin && !isAuthRoute && !user) {
     const url = request.nextUrl.clone();
@@ -41,17 +45,21 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (isLogin && user) {
-    const allowlist = (process.env.ALLOWED_EMAILS || "")
-      .split(",")
-      .map((e) => e.trim().toLowerCase())
-      .filter(Boolean);
-    if (user.email && allowlist.includes(user.email.toLowerCase())) {
+  if (!isLogin && !isAuthRoute && user) {
+    if (!user.email || !allowlist.includes(user.email.toLowerCase())) {
+      await supabase.auth.signOut();
       const url = request.nextUrl.clone();
-      url.pathname = "/os";
-      url.search = "";
+      url.pathname = "/os/login";
+      url.search = "?error=unauthorized";
       return NextResponse.redirect(url);
     }
+  }
+
+  if (isLogin && user?.email && allowlist.includes(user.email.toLowerCase())) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/os";
+    url.search = "";
+    return NextResponse.redirect(url);
   }
 
   return response;
