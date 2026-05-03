@@ -32,20 +32,21 @@ export async function updateSession(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
   const isLogin = pathname === "/os/login";
+  const isLoginAction = pathname === "/os/login/send";
   const isAuthRoute = pathname.startsWith("/os/auth");
   const allowlist = (process.env.ALLOWED_EMAILS || "")
     .split(",")
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean);
 
-  if (!isLogin && !isAuthRoute && !user) {
+  if (!isLogin && !isLoginAction && !isAuthRoute && !user) {
     const url = request.nextUrl.clone();
     url.pathname = "/os/login";
     url.search = "";
     return NextResponse.redirect(url);
   }
 
-  if (!isLogin && !isAuthRoute && user) {
+  if (!isLogin && !isLoginAction && !isAuthRoute && user) {
     if (!user.email || !allowlist.includes(user.email.toLowerCase())) {
       await supabase.auth.signOut();
       const url = request.nextUrl.clone();
