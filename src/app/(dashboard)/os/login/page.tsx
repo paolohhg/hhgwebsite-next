@@ -1,5 +1,3 @@
-import { sendMagicLink } from "./actions";
-
 export default async function LoginPage({
   searchParams,
 }: {
@@ -38,7 +36,7 @@ export default async function LoginPage({
             </a>
           </div>
         ) : (
-          <form action={sendMagicLink} className="space-y-2">
+          <form action="/os/login/send" method="post" className="space-y-2">
             <label className="block">
               <span className="font-bold uppercase tracking-wider text-xs">
                 Email
