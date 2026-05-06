@@ -40,7 +40,7 @@ Goal: make `/os` feel like the main operating home, not a collection of CRUD pag
 - [x] Add a "Stale Projects" band for active projects that have not been updated recently
 - [x] Add empty states that tell the user what action to take next
 - [x] Preserve the black-and-white nutrition-label aesthetic
-- [ ] Verify mobile width with no horizontal scroll
+- [x] Verify mobile width with no horizontal scroll
 
 Primary files:
 
@@ -58,11 +58,11 @@ Acceptance:
 
 Goal: reduce repeated row/form markup before expanding the dashboard.
 
-- [ ] Create a reusable page header component
-- [ ] Create a reusable action disclosure/form shell
-- [ ] Create a reusable metadata row pattern for project/task/asset list items
-- [ ] Create a reusable destructive action style
-- [ ] Keep components server-friendly unless client behavior is required
+- [x] Create a reusable page header component
+- [x] Create a reusable action disclosure/form shell
+- [x] Create a reusable metadata row pattern for project/task/asset list items
+- [x] Create a reusable destructive action style
+- [x] Keep components server-friendly unless client behavior is required
 
 Primary files:
 
@@ -71,9 +71,9 @@ Primary files:
 
 Acceptance:
 
-- [ ] Existing pages read cleaner and share the same interaction language
-- [ ] No visible UI regression on projects, tasks, or assets
-- [ ] Component names describe operational use, not visual decoration
+- [x] Existing pages read cleaner and share the same interaction language
+- [x] No visible UI regression on projects, tasks, or assets
+- [x] Component names describe operational use, not visual decoration
 
 ### 3. Project Components
 
@@ -83,11 +83,11 @@ Goal: make projects the backbone of the PM system.
 - [ ] Add `priority`: urgent, high, normal, low
 - [ ] Add `target_date` and optional `start_date`
 - [ ] Add `blocked_reason`
-- [ ] Surface owner, revenue tier, status, and next action consistently
-- [ ] Add a project detail summary before the edit form
-- [ ] Move linked tasks higher in the detail page, grouped by status
-- [ ] Add a quick task creation path from the project detail page
-- [ ] Consider adding blocked/at-risk language before adding more statuses
+- [x] Surface owner, revenue tier, status, and next action consistently
+- [x] Add a project detail summary before the edit form
+- [x] Move linked tasks higher in the detail page, grouped by status
+- [x] Add a quick task creation path from the project detail page
+- [x] Consider adding blocked/at-risk language before adding more statuses
 
 Primary files:
 
@@ -98,23 +98,23 @@ Primary files:
 
 Acceptance:
 
-- [ ] A project page shows current state before edit controls
-- [ ] User can decide the next project action within 10 seconds
-- [ ] Project-linked tasks are easy to create and scan
+- [x] A project page shows current state before edit controls
+- [x] User can decide the next project action within 10 seconds
+- [x] Project-linked tasks are easy to create and scan
 
 ### 4. Task Components
 
 Goal: make tasks fast enough for daily use on phone or desktop.
 
-- [ ] Split tasks into Today, Doing, Open, Waiting/Blocked if added, and Done
+- [x] Split tasks into Today, Doing, Open, Waiting/Blocked if added, and Done
 - [ ] Add `priority`: urgent, high, normal, low
 - [ ] Add `blocked_reason`
 - [ ] Add `updated_at` or equivalent last-touched signal
 - [ ] Add due-today and overdue styling without adding pills/badges
-- [ ] Add project filter or owner filter if the list becomes long
+- [x] Add project filter or owner filter if the list becomes long
 - [ ] Add edit task support, not only create/toggle/delete
-- [ ] Add quick assignment switching between Paolo and Mel
-- [ ] Confirm tap targets are at least 40px on mobile
+- [x] Add quick assignment switching between Paolo and Mel
+- [x] Confirm tap targets are at least 40px on mobile
 
 Primary files:
 
@@ -124,9 +124,9 @@ Primary files:
 
 Acceptance:
 
-- [ ] Tasks can be updated without deleting and recreating them
-- [ ] Overdue and due-today work is unmistakable
-- [ ] Mobile interaction is comfortable in real kitchen/transit use
+- [x] Tasks can be updated without deleting and recreating them
+- [x] Overdue and due-today work is unmistakable
+- [x] Mobile interaction is comfortable in real kitchen/transit use
 
 ### 5. Asset Components
 
@@ -136,9 +136,9 @@ Goal: make assets useful as sellable/productized inventory, not just a list.
 - [ ] Add `owner` if asset follow-up belongs to Paolo or Mel
 - [ ] Add `price` or `revenue_value` only once asset monetization language is clear
 - [ ] Add `last_reviewed_at` to keep sellable inventory from going stale
-- [ ] Add an asset detail/edit view if notes and links become important
+- [x] Add an asset detail/edit view if notes and links become important
 - [ ] Add status-change history only if needed after daily use
-- [ ] Make Drive links easy to open while preserving private posture
+- [x] Make Drive links easy to open while preserving private posture
 - [ ] Surface ready-to-sell assets on `/os` overview
 
 Primary files:
@@ -151,7 +151,7 @@ Primary files:
 Acceptance:
 
 - [ ] Ready-to-sell assets are visible from the home dashboard
-- [ ] Asset status can be changed quickly and confidently
+- [x] Asset status can be changed quickly and confidently
 - [ ] Asset fields reflect actual HHG inventory language
 
 ### 6. Data Model Pass
@@ -182,7 +182,7 @@ Goal: keep the app simple while making Paolo/Mel usage explicit.
 
 - [x] Keep Paolo and Chef Mel as the first auth login emails
 - [ ] Keep allowlist as the source of access if there is a real team expansion need
-- [ ] Add user-aware views only where they reduce clutter, such as "My Tasks"
+- [x] Add user-aware views only where they reduce clutter, such as "My Tasks"
 - [ ] Confirm Mel's mobile login and first-task flow
 - [ ] Add lightweight role language only if permissions diverge later
 
@@ -195,7 +195,7 @@ Primary files:
 Acceptance:
 
 - [ ] Paolo and Mel can both sign in and use the same dashboard
-- [ ] The signed-in user's email is visible but not visually dominant
+- [x] The signed-in user's email is visible but not visually dominant
 - [x] Access errors are understandable without exposing allowlist details
 
 ### 8. Verification Pass
@@ -206,9 +206,9 @@ Goal: make each component safe to ship before moving to the next.
 - [x] Run `npm run build`
 - [x] Smoke test `/os/login` unauthenticated
 - [x] Smoke test `/os` redirect behavior unauthenticated
-- [ ] Test mobile layout at narrow width
+- [x] Test mobile layout at narrow width
 - [ ] Test create/edit/delete flows against Supabase when env is available
-- [ ] Update `STATUS.md` after runtime state changes
+- [x] Update `STATUS.md` after runtime state changes
 
 ## Component Work Rule
 
@@ -232,7 +232,7 @@ Start with **1. Dashboard Shell**, then **2. Shared UI Components**. Those two s
 - [x] Task editing
 - [ ] Project health
 - [ ] Last-updated/stale-work signals
-- [ ] My Tasks or owner filter
+- [x] My Tasks or owner filter
 - [ ] Search and filters once lists grow
 - [ ] Comments or update log after the single notes field proves insufficient
 - [ ] Attachments or links on projects and tasks

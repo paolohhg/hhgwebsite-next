@@ -2,7 +2,7 @@
 
 Snapshot of "what's live right now." Update this file whenever runtime state changes.
 
-**Last updated:** 2026-05-02 (post SEO sitemap pass, commit `fe8fadb`)
+**Last updated:** 2026-05-06 (Heard OS PM dashboard hardening pass)
 **Live URL:** https://heardhospitalitygroup.com
 **Production deploy:** see `vercel ls hhgwebsite-next | head -3`
 
@@ -14,7 +14,7 @@ Snapshot of "what's live right now." Update this file whenever runtime state cha
 |---|---|---|
 | Marketing site | ✅ Live | All 6 pages serving. SEO baseline in place; per-page OG metadata + OG image still pending (see `ROADMAP.md`). |
 | ContractForge | ✅ Live | Model: `claude-haiku-4-5`. End-to-end smoke-tested. |
-| Heard OS dashboard (`/os`) | ⚠️ Live but unverified | Code deployed, env vars set, schema applied. Mel has not signed in / validated yet. |
+| Heard OS dashboard (`/os`) | ⚠️ Live, in active MVP review | Password login/setup, calendar, clickable dashboard stats, project quick tasks, task filters, and asset edits are implemented. Mel has not signed in / validated yet. |
 | Hosting | ✅ Vercel `hhgwebsite-next` | Custom domain attached, DNS resolving. |
 | Old repo cleanup | ⚠️ Partially done | Local emptied, Vercel projects deleted. GitHub repo `paolohhg/stability-grid-pro` still exists — pending manual delete via web UI. |
 
@@ -106,7 +106,7 @@ Dark theme via CSS variables in `src/app/globals.css`. Tailwind config maps sema
 
 | Item | Value |
 |---|---|
-| Auth | Magic link via Supabase `signInWithOtp` |
+| Auth | Supabase email/password plus magic-link fallback/setup |
 | Allowlist | `ALLOWED_EMAILS` env var, comma-separated. Currently `paolo@heardhospitalitygroup.com,chefmel@heardhospitalitygroup.com`. |
 | Allowlist enforcement | Two layers: `/os/auth/callback` route (signs out + redirects on mismatch) AND `(app)/layout.tsx` (defense-in-depth re-check) |
 | Middleware | `src/middleware.ts` matches `/os/:path*`, redirects unauth'd to `/os/login` |
@@ -119,13 +119,16 @@ Dark theme via CSS variables in `src/app/globals.css`. Tailwind config maps sema
 
 | Route | File | Purpose |
 |---|---|---|
-| `/os` | `src/app/os/(app)/page.tsx` | Overview: stat tiles, active projects, open tasks, sellable assets |
-| `/os/login` | `src/app/os/login/page.tsx` | Magic-link form. Silently no-ops for non-allowlisted emails (anti-enumeration). |
+| `/os` | `src/app/os/(app)/page.tsx` | Overview: clickable stat tiles, Today, calendar preview, next actions, stale work, sellable assets |
+| `/os/login` | `src/app/os/login/page.tsx` | Password login, password setup, and magic-link fallback. Silently no-ops for non-allowlisted emails where possible. |
 | `/os/auth/callback` | `src/app/os/auth/callback/route.ts` | OAuth callback. Exchanges code → session, then re-checks allowlist. Mismatch → `signOut` + redirect to login with error. |
-| `/os/projects` | `src/app/os/(app)/projects/page.tsx` | Projects list grouped by status. Inline create form. |
-| `/os/projects/[id]` | `src/app/os/(app)/projects/[id]/page.tsx` | Project detail + edit + delete + linked tasks |
-| `/os/tasks` | `src/app/os/(app)/tasks/page.tsx` | Tasks split into Doing / Open / Done(last 25). Status toggle + delete per row. |
-| `/os/assets` | `src/app/os/(app)/assets/page.tsx` | Assets grouped by status. Status select per row (only client-JS in /os, via `status-select.tsx`). |
+| `/os/calendar` | `src/app/os/(app)/calendar/page.tsx` | Day/week/month dated-work view with quick task creation. |
+| `/os/password` | `src/app/os/(app)/password/page.tsx` | Authenticated password update page used after setup link. |
+| `/os/projects` | `src/app/os/(app)/projects/page.tsx` | Projects list grouped by status. Shared create disclosure. |
+| `/os/projects/[id]` | `src/app/os/(app)/projects/[id]/page.tsx` | Project summary, quick task creation, grouped linked tasks, edit, delete. |
+| `/os/tasks` | `src/app/os/(app)/tasks/page.tsx` | Tasks split into Today / Doing / Open / Done(last 25), owner filters, status toggle, assignee switch, delete. |
+| `/os/tasks/[id]` | `src/app/os/(app)/tasks/[id]/page.tsx` | Full task edit page. |
+| `/os/assets` | `src/app/os/(app)/assets/page.tsx` | Assets grouped by status. Status select per row, Drive links, inline edit disclosure, delete. |
 
 ### Data model (Supabase)
 
@@ -182,6 +185,9 @@ Row Level Security is enabled on all three tables. Policies grant SELECT/ALL to 
 
 | Commit | Summary |
 |---|---|
+| `pending` | Heard OS: shared PM UI components, project quick tasks, task owner filters, inline asset edit |
+| `f0c6994` | Make Heard OS dashboard stats clickable |
+| `dc8bbe8` | Use magic link for Heard OS password setup |
 | `fe8fadb` | SEO: dynamic sitemap, add canonicals to /contract-forge and /heard-os |
 | `d1d794c` | ContractForge: swap Sonnet 4.6 → Haiku 4.5 |
 | `abae81a` | ContractForge: raise function timeout to 300s, cap output at 4000 tokens |

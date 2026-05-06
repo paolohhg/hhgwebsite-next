@@ -53,6 +53,23 @@ export function Section({
   );
 }
 
+export function ActionDisclosure({
+  label,
+  children,
+}: {
+  label: string;
+  children: ReactNode;
+}) {
+  return (
+    <details className="mb-8 border-b-2 border-black">
+      <summary className="cursor-pointer py-3 font-bold uppercase tracking-wider text-xs">
+        + {label}
+      </summary>
+      <div className="pb-4">{children}</div>
+    </details>
+  );
+}
+
 export function EmptyState({ children }: { children: ReactNode }) {
   return (
     <p className="border-b border-black/30 py-3 text-sm leading-relaxed">
@@ -61,19 +78,59 @@ export function EmptyState({ children }: { children: ReactNode }) {
   );
 }
 
-export function Row({
-  children,
+export function MetaRow({
+  href,
+  title,
+  subtitle,
+  meta,
+  marker,
   bold = false,
+  children,
 }: {
-  children: ReactNode;
+  href?: string;
+  title: ReactNode;
+  subtitle?: ReactNode;
+  meta?: ReactNode;
+  marker?: ReactNode;
   bold?: boolean;
+  children?: ReactNode;
 }) {
+  const titleNode = href ? (
+    <Link href={href} className="hover:underline">
+      {title}
+    </Link>
+  ) : (
+    title
+  );
+
+  const body = (
+    <>
+      {marker ? (
+        <span className="font-mono text-base leading-none shrink-0">{marker}</span>
+      ) : null}
+      <div className="min-w-0 flex-1">
+        <p className={`text-sm truncate ${bold ? "font-bold" : ""}`}>
+          {titleNode}
+        </p>
+        {subtitle ? (
+          <p className="text-[11px] uppercase tracking-wider truncate">
+            {subtitle}
+          </p>
+        ) : null}
+      </div>
+    </>
+  );
+
   return (
-    <div
-      className={`border-b border-black/30 py-3 flex items-baseline justify-between gap-4 ${bold ? "font-bold" : ""}`}
-    >
+    <li className="border-b border-black/30 py-3 flex items-start justify-between gap-3">
+      <div className="min-w-0 flex flex-1 items-start gap-3">{body}</div>
+      {meta ? (
+        <span className="font-mono text-[11px] uppercase tracking-wider whitespace-nowrap text-right shrink-0">
+          {meta}
+        </span>
+      ) : null}
       {children}
-    </div>
+    </li>
   );
 }
 
@@ -232,6 +289,17 @@ export function PrimaryButton({
 }
 
 export function GhostButton({ children }: { children: ReactNode }) {
+  return (
+    <button
+      type="submit"
+      className="font-bold uppercase tracking-wider text-xs underline hover:no-underline"
+    >
+      {children}
+    </button>
+  );
+}
+
+export function DestructiveButton({ children }: { children: ReactNode }) {
   return (
     <button
       type="submit"

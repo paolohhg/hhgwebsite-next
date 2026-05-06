@@ -10,13 +10,20 @@ import {
   type Task,
 } from "@/lib/os/types";
 import {
+  ActionDisclosure,
+  DestructiveButton,
   Field,
+  MetaRow,
+  PageHeader,
   PrimaryButton,
   Section,
   SelectField,
   TextareaField,
 } from "../../../_components/ui";
 import { deleteProject, updateProject } from "../actions";
+import { createTask } from "../../tasks/actions";
+
+const TASK_ORDER = ["doing", "open", "done"] as const;
 
 export default async function ProjectDetailPage({
   params,
@@ -38,6 +45,10 @@ export default async function ProjectDetailPage({
   if (projectRes.error || !projectRes.data) notFound();
   const project = projectRes.data as Project;
   const tasks = (tasksRes.data ?? []) as Task[];
+  const tasksByStatus = TASK_ORDER.map((status) => ({
+    status,
+    items: tasks.filter((task) => task.status === status),
+  }));
 
   return (
     <div>
@@ -48,46 +59,101 @@ export default async function ProjectDetailPage({
         ← All Projects
       </Link>
 
-      <div className="border-t-4 border-b-4 border-black py-3 mt-4 mb-6">
-        <h1 className="font-bold uppercase tracking-wider text-base">
-          {project.name}
-        </h1>
-        <p className="font-mono text-[11px] uppercase tracking-wider mt-1">
-          {project.brand} · {project.status} · {project.owner}
-          {project.revenue_tier ? ` · ${project.revenue_tier}` : ""}
-        </p>
-      </div>
+      <PageHeader
+        title={project.name}
+        eyebrow={`${project.brand} · ${project.status} · ${project.owner}${
+          project.revenue_tier ? ` · ${project.revenue_tier}` : ""
+        }`}
+        right={`Updated ${new Date(project.updated_at).toLocaleDateString()}`}
+      />
+
+      <Section label="Project Summary">
+        <div className="border-b border-black/30 py-3 space-y-3">
+          {project.next_action ? (
+            <div>
+              <p className="font-bold uppercase tracking-wider text-xs">
+                Next Action
+              </p>
+              <p className="text-sm leading-relaxed">{project.next_action}</p>
+            </div>
+          ) : null}
+          {project.description ? (
+            <div>
+              <p className="font-bold uppercase tracking-wider text-xs">
+                Description
+              </p>
+              <p className="text-sm leading-relaxed">{project.description}</p>
+            </div>
+          ) : null}
+          {project.notes ? (
+            <div>
+              <p className="font-bold uppercase tracking-wider text-xs">
+                Notes
+              </p>
+              <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                {project.notes}
+              </p>
+            </div>
+          ) : null}
+          {!project.next_action && !project.description && !project.notes ? (
+            <p className="text-sm leading-relaxed">
+              Add a next action, description, or notes below so this project has
+              enough context for a quick decision.
+            </p>
+          ) : null}
+        </div>
+      </Section>
+
+      <ActionDisclosure label="Quick Task">
+        <form action={createTask}>
+          <input type="hidden" name="project_id" value={project.id} />
+          <Field label="Title" name="title" required />
+          <SelectField
+            label="Assignee"
+            name="assignee"
+            options={["Paolo", "Mel"]}
+            required
+            defaultValue={project.owner === "Mel" ? "Mel" : "Paolo"}
+          />
+          <Field label="Due Date" name="due_date" type="date" />
+          <TextareaField label="Notes" name="notes" rows={2} />
+          <PrimaryButton>Create Task</PrimaryButton>
+        </form>
+      </ActionDisclosure>
 
       <Section label="Linked Tasks" right={`${tasks.length}`}>
         {tasks.length === 0 ? (
           <p className="text-sm py-3">None yet.</p>
         ) : (
-          <ul>
-            {tasks.map((t) => (
-              <li
-                key={t.id}
-                className="border-b border-black/30 py-3 flex items-baseline justify-between gap-4"
-              >
-                <span className="flex items-baseline gap-2 min-w-0">
-                  <span className="font-mono text-sm">
-                    {t.status === "done"
-                      ? "●"
-                      : t.status === "doing"
-                        ? "◐"
-                        : "○"}
-                  </span>
-                  <span
-                    className={`text-sm truncate ${t.status !== "done" ? "font-bold" : ""}`}
-                  >
-                    {t.title}
-                  </span>
-                </span>
-                <span className="font-mono tabular-nums text-xs whitespace-nowrap">
-                  {t.assignee} · {t.due_date ?? "—"}
-                </span>
-              </li>
-            ))}
-          </ul>
+          <div className="space-y-6">
+            {tasksByStatus.map(({ status, items }) =>
+              items.length === 0 ? null : (
+                <div key={status}>
+                  <p className="font-bold uppercase tracking-wider text-[10px]">
+                    {status}
+                  </p>
+                  <ul>
+                    {items.map((t) => (
+                      <MetaRow
+                        key={t.id}
+                        href={`/os/tasks/${t.id}`}
+                        marker={
+                          t.status === "done"
+                            ? "●"
+                            : t.status === "doing"
+                              ? "◐"
+                              : "○"
+                        }
+                        title={t.title}
+                        meta={`${t.assignee} · ${t.due_date ?? "—"}`}
+                        bold={t.status !== "done"}
+                      />
+                    ))}
+                  </ul>
+                </div>
+              ),
+            )}
+          </div>
         )}
       </Section>
 
@@ -149,16 +215,8 @@ export default async function ProjectDetailPage({
       </Section>
 
       <Section label="Danger">
-        <form
-          action={deleteProject.bind(null, project.id)}
-          className="py-3"
-        >
-          <button
-            type="submit"
-            className="font-bold uppercase tracking-wider text-xs underline hover:no-underline"
-          >
-            Delete Project
-          </button>
+        <form action={deleteProject.bind(null, project.id)} className="py-3">
+          <DestructiveButton>Delete Project</DestructiveButton>
         </form>
       </Section>
 

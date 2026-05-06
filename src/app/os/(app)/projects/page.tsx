@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import {
   BRANDS,
@@ -8,7 +7,10 @@ import {
   type Project,
 } from "@/lib/os/types";
 import {
+  ActionDisclosure,
   Field,
+  MetaRow,
+  PageHeader,
   PrimaryButton,
   Section,
   SelectField,
@@ -32,19 +34,9 @@ export default async function ProjectsPage() {
 
   return (
     <div>
-      <div className="border-t-4 border-b-4 border-black py-3 mb-6 flex items-baseline justify-between">
-        <h1 className="font-bold uppercase tracking-wider text-base">
-          Projects
-        </h1>
-        <span className="font-mono tabular-nums text-xs uppercase tracking-wider">
-          {projects.length} total
-        </span>
-      </div>
+      <PageHeader title="Projects" right={`${projects.length} total`} />
 
-      <details className="mb-8 border-b-2 border-black">
-        <summary className="cursor-pointer py-3 font-bold uppercase tracking-wider text-xs">
-          + New Project
-        </summary>
+      <ActionDisclosure label="New Project">
         <form action={createProject} className="pb-4">
           <Field label="Name" name="name" required />
           <SelectField
@@ -79,7 +71,7 @@ export default async function ProjectsPage() {
           <TextareaField label="Notes" name="notes" rows={3} />
           <PrimaryButton>Create Project</PrimaryButton>
         </form>
-      </details>
+      </ActionDisclosure>
 
       {grouped.map(({ status, items }) =>
         items.length === 0 ? null : (
@@ -90,30 +82,21 @@ export default async function ProjectsPage() {
           >
             <ul>
               {items.map((p) => (
-                <li
+                <MetaRow
                   key={p.id}
-                  className="border-b border-black/30 py-3 flex items-baseline justify-between gap-4"
-                >
-                  <Link
-                    href={`/os/projects/${p.id}`}
-                    className="min-w-0 flex-1 hover:underline"
-                  >
-                    <span className="font-bold text-sm truncate block">
-                      {p.name}
-                    </span>
-                    {p.next_action ? (
-                      <span className="text-xs block truncate">
-                        → {p.next_action}
-                      </span>
-                    ) : null}
-                  </Link>
-                  <span className="font-mono text-[11px] uppercase tracking-wider whitespace-nowrap text-right">
-                    {p.brand}
-                    <br />
-                    {p.owner}
-                    {p.revenue_tier ? ` · ${p.revenue_tier}` : ""}
-                  </span>
-                </li>
+                  href={`/os/projects/${p.id}`}
+                  title={p.name}
+                  subtitle={p.next_action ? `→ ${p.next_action}` : undefined}
+                  meta={
+                    <>
+                      {p.brand}
+                      <br />
+                      {p.owner}
+                      {p.revenue_tier ? ` · ${p.revenue_tier}` : ""}
+                    </>
+                  }
+                  bold
+                />
               ))}
             </ul>
           </Section>

@@ -7,13 +7,17 @@ import {
   type TaskStatus,
 } from "@/lib/os/types";
 import {
+  ActionDisclosure,
+  DestructiveButton,
   Field,
+  MetaRow,
+  PageHeader,
   PrimaryButton,
   Section,
   SelectField,
   TextareaField,
 } from "../../_components/ui";
-import { createTask, deleteTask, toggleTaskStatus } from "./actions";
+import { createTask, deleteTask, setTaskAssignee, toggleTaskStatus } from "./actions";
 
 const GLYPH: Record<TaskStatus, string> = {
   open: "○",
@@ -21,7 +25,12 @@ const GLYPH: Record<TaskStatus, string> = {
   done: "●",
 };
 
-export default async function TasksPage() {
+export default async function TasksPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ owner?: string; project?: string }>;
+}) {
+  const params = await searchParams;
   const supabase = await createClient();
   const [tasksRes, projectsRes] = await Promise.all([
     supabase
@@ -39,24 +48,59 @@ export default async function TasksPage() {
   const projects = (projectsRes.data ?? []) as Pick<Project, "id" | "name">[];
   const projectName = new Map(projects.map((p) => [p.id, p.name]));
   const today = new Date().toISOString().slice(0, 10);
+  const ownerFilter =
+    params.owner === "Paolo" || params.owner === "Mel" ? params.owner : null;
+  const projectFilter = params.project || null;
+  const visibleTasks = tasks.filter((task) => {
+    if (ownerFilter && task.assignee !== ownerFilter) return false;
+    if (projectFilter && task.project_id !== projectFilter) return false;
+    return true;
+  });
 
-  const open = tasks.filter((t) => t.status === "open");
-  const doing = tasks.filter((t) => t.status === "doing");
-  const done = tasks.filter((t) => t.status === "done").slice(0, 25);
+  const overdue = visibleTasks.filter(
+    (t) => t.status !== "done" && !!t.due_date && t.due_date < today,
+  );
+  const dueToday = visibleTasks.filter(
+    (t) => t.status !== "done" && t.due_date === today,
+  );
+  const todayTasks = [
+    ...overdue,
+    ...dueToday.filter((task) => !overdue.includes(task)),
+  ];
+  const doing = visibleTasks.filter((t) => t.status === "doing");
+  const open = visibleTasks.filter((t) => t.status === "open");
+  const done = visibleTasks.filter((t) => t.status === "done").slice(0, 25);
+  const openTotal = tasks.filter((t) => t.status !== "done").length;
 
   return (
     <div>
-      <div className="border-t-4 border-b-4 border-black py-3 mb-6 flex items-baseline justify-between">
-        <h1 className="font-bold uppercase tracking-wider text-base">Tasks</h1>
-        <span className="font-mono tabular-nums text-xs uppercase tracking-wider">
-          {tasks.filter((t) => t.status !== "done").length} open
-        </span>
-      </div>
+      <PageHeader
+        title="Tasks"
+        eyebrow={
+          ownerFilter
+            ? `${ownerFilter} view`
+            : projectFilter
+              ? "Project view"
+              : "All owners"
+        }
+        right={`${openTotal} open`}
+      />
 
-      <details className="mb-8 border-b-2 border-black">
-        <summary className="cursor-pointer py-3 font-bold uppercase tracking-wider text-xs">
-          + New Task
-        </summary>
+      <Section label="Filters">
+        <div className="border-b border-black/30 py-3 flex flex-wrap gap-x-5 gap-y-2 font-bold uppercase tracking-wider text-xs">
+          <Link href="/os/tasks" className={!ownerFilter && !projectFilter ? "underline" : "hover:underline"}>
+            All
+          </Link>
+          <Link href="/os/tasks?owner=Paolo" className={ownerFilter === "Paolo" ? "underline" : "hover:underline"}>
+            Paolo
+          </Link>
+          <Link href="/os/tasks?owner=Mel" className={ownerFilter === "Mel" ? "underline" : "hover:underline"}>
+            Mel
+          </Link>
+        </div>
+      </Section>
+
+      <ActionDisclosure label="New Task">
         <form action={createTask} className="pb-4">
           <Field label="Title" name="title" required />
           <SelectField
@@ -87,8 +131,14 @@ export default async function TasksPage() {
           <TextareaField label="Notes" name="notes" rows={2} />
           <PrimaryButton>Create Task</PrimaryButton>
         </form>
-      </details>
+      </ActionDisclosure>
 
+      <TaskList
+        label="Today"
+        tasks={todayTasks}
+        projectName={projectName}
+        today={today}
+      />
       <TaskList
         label="Doing"
         tasks={doing}
@@ -109,7 +159,7 @@ export default async function TasksPage() {
         muted
       />
 
-      {tasks.length === 0 ? (
+      {visibleTasks.length === 0 ? (
         <p className="text-sm py-3">No tasks yet. Add one above.</p>
       ) : null}
     </div>
@@ -138,60 +188,65 @@ function TaskList({
             t.status !== "done" && !!t.due_date && t.due_date < today;
           const proj = t.project_id ? projectName.get(t.project_id) : null;
           return (
-            <li
+            <MetaRow
               key={t.id}
-              className="border-b border-black/30 py-3 flex items-baseline justify-between gap-3"
+              href={`/os/tasks/${t.id}`}
+              marker={
+                <form
+                  action={toggleTaskStatus.bind(null, t.id, t.status)}
+                  className="shrink-0"
+                >
+                  <button
+                    type="submit"
+                    aria-label={`Mark ${t.status === "done" ? "open" : "next"}`}
+                    className="font-mono text-base leading-none hover:opacity-70 min-h-10 min-w-10 text-left"
+                  >
+                    {GLYPH[t.status]}
+                  </button>
+                </form>
+              }
+              title={
+                <>
+                  {isOverdue ? "! " : ""}
+                  {t.title}
+                </>
+              }
+              subtitle={proj ? `→ ${proj}` : undefined}
+              meta={
+                <>
+                  {t.assignee}
+                  <br />
+                  {t.due_date ?? "—"}
+                </>
+              }
+              bold={!muted || isOverdue}
             >
-              <form
-                action={toggleTaskStatus.bind(null, t.id, t.status)}
-                className="shrink-0"
-              >
-                <button
-                  type="submit"
-                  aria-label={`Mark ${t.status === "done" ? "open" : "next"}`}
-                  className="font-mono text-base leading-none hover:opacity-70"
+              {t.status !== "done" ? (
+                <form
+                  action={setTaskAssignee.bind(
+                    null,
+                    t.id,
+                    t.assignee === "Paolo" ? "Mel" : "Paolo",
+                  )}
+                  className="shrink-0"
                 >
-                  {GLYPH[t.status]}
-                </button>
-              </form>
-
-              <div className="min-w-0 flex-1">
-                <p
-                  className={`text-sm truncate ${muted ? "" : "font-bold"} ${
-                    isOverdue ? "font-bold" : ""
-                  }`}
-                >
-                  <Link href={`/os/tasks/${t.id}`} className="hover:underline">
-                    {isOverdue ? "! " : ""}
-                    {t.title}
-                  </Link>
-                </p>
-                {proj ? (
-                  <p className="text-[11px] uppercase tracking-wider truncate">
-                    → {proj}
-                  </p>
-                ) : null}
-              </div>
-
-              <div className="font-mono tabular-nums text-xs whitespace-nowrap text-right shrink-0">
-                {t.assignee}
-                <br />
-                {t.due_date ?? "—"}
-              </div>
+                  <button
+                    type="submit"
+                    aria-label="Switch assignee"
+                    className="font-bold uppercase tracking-wider text-[10px] underline hover:no-underline min-h-10"
+                  >
+                    Assign {t.assignee === "Paolo" ? "Mel" : "Paolo"}
+                  </button>
+                </form>
+              ) : null}
 
               <form
                 action={deleteTask.bind(null, t.id)}
                 className="shrink-0 ml-2"
               >
-                <button
-                  type="submit"
-                  aria-label="Delete task"
-                  className="font-mono text-sm hover:font-bold"
-                >
-                  ×
-                </button>
+                <DestructiveButton>×</DestructiveButton>
               </form>
-            </li>
+            </MetaRow>
           );
         })}
       </ul>
