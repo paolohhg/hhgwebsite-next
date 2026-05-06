@@ -8,6 +8,8 @@ type TaskWithProject = Task & {
   projectName?: string;
 };
 
+type DashboardFocus = "active-projects" | "open-tasks" | "attention" | "sellable";
+
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 function formatDate(value: string | null) {
@@ -61,7 +63,49 @@ function TaskRow({
   );
 }
 
-export default async function OverviewPage() {
+function ProjectRow({ project }: { project: Project }) {
+  return (
+    <li className="border-b border-black/30 py-3 flex items-start justify-between gap-4">
+      <Link
+        href={`/os/projects/${project.id}`}
+        className="min-w-0 flex-1 hover:underline"
+      >
+        <span className="font-bold text-sm truncate block">{project.name}</span>
+        {project.next_action ? (
+          <span className="text-xs truncate block">{project.next_action}</span>
+        ) : null}
+      </Link>
+      <span className="font-mono text-[11px] uppercase tracking-wider whitespace-nowrap text-right">
+        {project.owner}
+        <br />
+        {project.brand}
+      </span>
+    </li>
+  );
+}
+
+function AssetRow({ asset }: { asset: Asset }) {
+  return (
+    <li className="border-b border-black/30 py-3 flex items-baseline justify-between gap-4">
+      <span className="font-bold text-sm truncate">{asset.name}</span>
+      <span className="font-mono text-[11px] uppercase tracking-wider whitespace-nowrap">
+        {asset.brand} · {asset.category}
+      </span>
+    </li>
+  );
+}
+
+export default async function OverviewPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ focus?: string }>;
+}) {
+  const params = await searchParams;
+  const focus = ["active-projects", "open-tasks", "attention", "sellable"].includes(
+    params.focus ?? "",
+  )
+    ? (params.focus as DashboardFocus)
+    : null;
   const supabase = await createClient();
   const [projectsRes, tasksRes, assetsRes] = await Promise.all([
     supabase
@@ -113,15 +157,106 @@ export default async function OverviewPage() {
       />
 
       <Section label="At a Glance">
-        <Stat label="Active Projects" value={activeProjects.length} />
-        <Stat label="Open Tasks" value={openTasks.length} />
+        <Stat
+          label="Active Projects"
+          value={activeProjects.length}
+          href="/os?focus=active-projects#dashboard-focus"
+        />
+        <Stat
+          label="Open Tasks"
+          value={openTasks.length}
+          href="/os?focus=open-tasks#dashboard-focus"
+        />
         <Stat
           label="Needs Attention"
           value={overdue.length + dueToday.length + staleProjects.length}
           emphasize={overdue.length + dueToday.length + staleProjects.length > 0}
+          href="/os?focus=attention#dashboard-focus"
         />
-        <Stat label="Ready to Sell" value={sellable.length} />
+        <Stat
+          label="Ready to Sell"
+          value={sellable.length}
+          href="/os?focus=sellable#dashboard-focus"
+        />
       </Section>
+
+      {focus ? (
+        <Section
+          label={
+            focus === "active-projects"
+              ? "All Active Projects"
+              : focus === "open-tasks"
+                ? "All Open Tasks"
+                : focus === "attention"
+                  ? "Needs Attention"
+                  : "Ready to Sell"
+          }
+          right={<Link href="/os">Clear</Link>}
+        >
+          <div id="dashboard-focus" className="scroll-mt-6">
+            {focus === "active-projects" ? (
+              activeProjects.length === 0 ? (
+                <EmptyState>No active projects yet.</EmptyState>
+              ) : (
+                <ul>
+                  {activeProjects.map((project) => (
+                    <ProjectRow key={project.id} project={project} />
+                  ))}
+                </ul>
+              )
+            ) : null}
+
+            {focus === "open-tasks" ? (
+              tasksWithProjects.length === 0 ? (
+                <EmptyState>No open tasks yet.</EmptyState>
+              ) : (
+                <ul>
+                  {tasksWithProjects.map((task) => (
+                    <TaskRow key={task.id} task={task} today={today} />
+                  ))}
+                </ul>
+              )
+            ) : null}
+
+            {focus === "attention" ? (
+              overdue.length + dueToday.length + staleProjects.length === 0 ? (
+                <EmptyState>No overdue, due-today, or stale active work.</EmptyState>
+              ) : (
+                <div className="space-y-6">
+                  {overdue.length || dueToday.length ? (
+                    <ul>
+                      {[...overdue, ...dueToday.filter((task) => !overdue.includes(task))].map(
+                        (task) => (
+                          <TaskRow key={task.id} task={task} today={today} />
+                        ),
+                      )}
+                    </ul>
+                  ) : null}
+                  {staleProjects.length ? (
+                    <ul>
+                      {staleProjects.map((project) => (
+                        <ProjectRow key={project.id} project={project} />
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
+              )
+            ) : null}
+
+            {focus === "sellable" ? (
+              sellable.length === 0 ? (
+                <EmptyState>No assets are marked ready-to-sell yet.</EmptyState>
+              ) : (
+                <ul>
+                  {sellable.map((asset) => (
+                    <AssetRow key={asset.id} asset={asset} />
+                  ))}
+                </ul>
+              )
+            ) : null}
+          </div>
+        </Section>
+      ) : null}
 
       <Section label="Today" right={`${todayQueue.length} items`}>
         {todayQueue.length === 0 ? (
@@ -151,27 +286,7 @@ export default async function OverviewPage() {
         ) : (
           <ul>
             {nextActions.slice(0, 10).map((project) => (
-              <li
-                key={project.id}
-                className="border-b border-black/30 py-3 flex items-start justify-between gap-4"
-              >
-                <Link
-                  href={`/os/projects/${project.id}`}
-                  className="min-w-0 flex-1 hover:underline"
-                >
-                  <span className="font-bold text-sm truncate block">
-                    {project.name}
-                  </span>
-                  <span className="text-xs truncate block">
-                    {project.next_action}
-                  </span>
-                </Link>
-                <span className="font-mono text-[11px] uppercase tracking-wider whitespace-nowrap text-right">
-                  {project.owner}
-                  <br />
-                  {project.brand}
-                </span>
-              </li>
+              <ProjectRow key={project.id} project={project} />
             ))}
           </ul>
         )}
@@ -222,15 +337,7 @@ export default async function OverviewPage() {
         ) : (
           <ul>
             {sellable.slice(0, 10).map((a) => (
-              <li
-                key={a.id}
-                className="border-b border-black/30 py-3 flex items-baseline justify-between gap-4"
-              >
-                <span className="font-bold text-sm truncate">{a.name}</span>
-                <span className="font-mono text-[11px] uppercase tracking-wider whitespace-nowrap">
-                  {a.brand} · {a.category}
-                </span>
-              </li>
+              <AssetRow key={a.id} asset={a} />
             ))}
           </ul>
         )}

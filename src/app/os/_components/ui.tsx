@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 
 export function PageHeader({
   title,
@@ -80,19 +81,38 @@ export function Stat({
   label,
   value,
   emphasize = false,
+  href,
 }: {
   label: string;
   value: string | number;
   emphasize?: boolean;
+  href?: string;
 }) {
-  return (
-    <div className="border-b border-black/30 py-3 flex items-baseline justify-between">
+  const content = (
+    <>
       <span className="text-sm uppercase tracking-wider">{label}</span>
       <span
         className={`font-mono tabular-nums text-2xl ${emphasize ? "font-bold" : ""}`}
       >
         {typeof value === "number" ? value.toString().padStart(2, "0") : value}
       </span>
+    </>
+  );
+
+  if (href) {
+    return (
+      <Link
+        href={href}
+        className="border-b border-black/30 py-3 flex items-baseline justify-between hover:bg-black hover:text-white transition-colors"
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <div className="border-b border-black/30 py-3 flex items-baseline justify-between">
+      {content}
     </div>
   );
 }
