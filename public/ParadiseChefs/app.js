@@ -6,6 +6,9 @@ const DEFAULT_SETTINGS = {
   brandLabel: "ParadiseChefs",
   accent: "#173f3b"
 };
+const UNIT_OPTIONS = ["ea", "g", "kg", "oz", "lb", "ml", "l", "cup", "qt", "gal", "case", "box", "bag"];
+const CATEGORY_OPTIONS = ["Protein", "Produce", "Dairy", "Dry goods", "Bakery", "Beverage", "Spice", "Condiment", "Frozen", "Other"];
+const STORAGE_OPTIONS = ["Dry", "Fridge", "Freezer", "Walk-in", "Drawer freezer", "Beverage", "Other"];
 
 const DATA_STORES = ["charters", "guests", "crew", "sources", "ports", "ingredients", "inventory", "recipes", "menus", "prepTasks", "shoppingLists", "expenses", "notes"];
 const STORES = ["settings", "users", "audit", "archives", ...DATA_STORES];
@@ -115,11 +118,11 @@ const ENTITIES = {
     description: "Canonical ingredient records that recipes and inventory will share.",
     fields: [
       ["name", "Ingredient name", "text", true],
-      ["category", "Category", "select:Protein|Produce|Dairy|Dry goods|Bakery|Beverage|Spice|Condiment|Frozen|Other"],
-      ["unit", "Default unit", "select:ea|g|kg|oz|lb|ml|l|cup|qt|gal|case|box|bag"],
+      ["category", "Category", `select:${CATEGORY_OPTIONS.join("|")}`],
+      ["unit", "Default unit", `select:${UNIT_OPTIONS.join("|")}`],
       ["allergens", "Allergen tags", "text"],
-      ["storageDefault", "Default storage", "select:Dry|Fridge|Freezer|Walk-in|Drawer freezer|Beverage|Other"],
-      ["lowStockDefault", "Default low-stock threshold", "number"],
+      ["storageDefault", "Default storage", `select:${STORAGE_OPTIONS.join("|")}`],
+      ["lowStockDefault", "Default par", "number"],
       ["notes", "Notes", "textarea"]
     ],
     columns: ["name", "category", "unit", "stockSummary"]
@@ -133,15 +136,16 @@ const ENTITIES = {
     fields: [
       ["ingredientId", "Ingredient", "ingredient", true],
       ["quantity", "Quantity on hand", "number", true],
-      ["unit", "Unit", "select:ea|g|kg|oz|lb|ml|l|cup|qt|gal|case|box|bag"],
-      ["zone", "Storage zone", "select:Dry|Fridge|Freezer|Walk-in|Drawer freezer|Beverage|Other"],
+      ["unit", "Unit", `select:${UNIT_OPTIONS.join("|")}`],
+      ["zone", "Storage zone", `select:${STORAGE_OPTIONS.join("|")}`],
       ["expirationDate", "Expiration date", "date"],
-      ["lowStockThreshold", "Low-stock threshold", "number"],
+      ["lowStockThreshold", "Par", "number"],
       ["watch", "Watch list", "checkbox"],
       ["sourceId", "Usual source", "source"],
+      ["vendorName", "Vendor/source note", "text"],
       ["notes", "Notes", "textarea"]
     ],
-    columns: ["ingredientId", "quantity", "zone", "status"]
+    columns: ["ingredientId", "quantity", "lowStockThreshold", "sourceId", "status"]
   }
 };
 
@@ -562,6 +566,7 @@ function viewMarkup() {
   if (state.view === "users") return usersView();
   if (state.view === "archives") return archivesView();
   if (state.view === "backup") return backupView();
+  if (state.view === "inventoryBulk") return inventoryBulkView();
   if (ENTITIES[state.view]?.fields) return entityView(state.view);
   return dashboardView();
 }
@@ -676,7 +681,9 @@ function usersView() {
 function entityView(entityType) {
   const meta = ENTITIES[entityType];
   const records = activeRecords(entityType);
-  const action = `<button class="btn primary" data-new-record="${entityType}" type="button">Add ${meta.singular.toLowerCase()}</button>`;
+  const action = entityType === "inventory"
+    ? `<button class="btn primary" data-view="inventoryBulk" type="button">Bulk add inventory</button><button class="btn" data-new-record="${entityType}" type="button">Add one item</button>`
+    : `<button class="btn primary" data-new-record="${entityType}" type="button">Add ${meta.singular.toLowerCase()}</button>`;
   return `
     ${topbar(meta.label, meta.description, action)}
     <section class="grid">
@@ -686,6 +693,82 @@ function entityView(entityType) {
         ${records.length ? entityTable(entityType, records) : `<div class="empty">No ${meta.label.toLowerCase()} yet.</div>`}
       </article>
     </section>
+  `;
+}
+
+function inventoryBulkView() {
+  return `
+    ${topbar("Bulk Inventory", "Add a full intake list in one screen. New ingredients and sources are created automatically when needed.", `<button class="btn" data-view="inventory" type="button">Back to inventory</button>`)}
+    <section class="grid">
+      <form class="panel full bulk-panel" id="bulkInventoryForm">
+        <div class="bulk-toolbar">
+          <div>
+            <h3>Inventory Intake</h3>
+            <p class="muted">Use par for the minimum amount you want on board. Source/vendor can be an existing source or a new name.</p>
+          </div>
+          <div class="actions">
+            <button class="btn" id="addBulkRows" type="button">Add 5 rows</button>
+            <button class="btn primary" type="submit">Save batch</button>
+          </div>
+        </div>
+        <div class="bulk-table-wrap">
+          <datalist id="sourceNames">
+            ${activeRecords("sources").map((source) => `<option value="${escapeHtml(source.name)}"></option>`).join("")}
+          </datalist>
+          <table class="bulk-table">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Category</th>
+                <th>On hand</th>
+                <th>Unit</th>
+                <th>Par</th>
+                <th>Storage</th>
+                <th>Source / vendor</th>
+                <th>Expires</th>
+                <th>Watch</th>
+                <th>Notes</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="bulkInventoryRows">
+              ${Array.from({ length: 12 }, (_, index) => bulkInventoryRow(index)).join("")}
+            </tbody>
+          </table>
+        </div>
+        <div class="actions bulk-bottom">
+          <button class="btn" id="addBulkRowsBottom" type="button">Add 5 rows</button>
+          <button class="btn primary" type="submit">Save batch</button>
+        </div>
+      </form>
+    </section>
+  `;
+}
+
+function bulkInventoryRow(index) {
+  return `
+    <tr data-bulk-row>
+      <td><input name="itemName_${index}" placeholder="Shallots"></td>
+      <td>${bareSelect(`category_${index}`, CATEGORY_OPTIONS, "Category")}</td>
+      <td><input name="quantity_${index}" type="number" step="0.01" min="0" placeholder="0"></td>
+      <td>${bareSelect(`unit_${index}`, UNIT_OPTIONS, "Unit")}</td>
+      <td><input name="par_${index}" type="number" step="0.01" min="0" placeholder="Par"></td>
+      <td>${bareSelect(`zone_${index}`, STORAGE_OPTIONS, "Storage")}</td>
+      <td><input name="sourceName_${index}" list="sourceNames" placeholder="Provisioner, market, vendor"></td>
+      <td><input name="expirationDate_${index}" type="date"></td>
+      <td class="center-cell"><input name="watch_${index}" type="checkbox"></td>
+      <td><input name="notes_${index}" placeholder="Brand, pack size, quality note"></td>
+      <td><button class="btn icon" data-clear-bulk-row type="button" title="Clear row">×</button></td>
+    </tr>
+  `;
+}
+
+function bareSelect(name, options, placeholder) {
+  return `
+    <select name="${name}">
+      <option value="">${escapeHtml(placeholder)}</option>
+      ${options.map((option) => `<option value="${escapeHtml(option)}">${escapeHtml(option)}</option>`).join("")}
+    </select>
   `;
 }
 
@@ -748,13 +831,14 @@ function columnLabel(column) {
     sourceId: "Source",
     ingredientId: "Ingredient",
     severeAllergy: "Risk",
-    stockSummary: "On hand"
+    stockSummary: "On hand",
+    lowStockThreshold: "Par"
   }[column] || titleCase(column);
 }
 
 function fieldDisplay(entityType, record, field) {
   if (field === "charterId") return escapeHtml(charterName(record[field]) || "Unassigned");
-  if (field === "sourceId") return escapeHtml(sourceName(record[field]) || "Unassigned");
+  if (field === "sourceId") return escapeHtml(sourceName(record[field]) || record.vendorName || "Unassigned");
   if (field === "ingredientId") return escapeHtml(ingredientName(record[field]) || "Unlinked");
   if (field === "severeAllergy") return record[field] ? `<span class="pill warn">Severe</span>` : `<span class="pill">Standard</span>`;
   if (field === "stockSummary") return escapeHtml(stockSummary(record));
@@ -1010,6 +1094,14 @@ function wireShell() {
   });
   document.querySelector("#settingsForm")?.addEventListener("submit", saveSettings);
   document.querySelector("#newUserButton")?.addEventListener("click", () => openUserModal());
+  document.querySelector("#bulkInventoryForm")?.addEventListener("submit", saveBulkInventory);
+  document.querySelector("#addBulkRows")?.addEventListener("click", addBulkRows);
+  document.querySelector("#addBulkRowsBottom")?.addEventListener("click", addBulkRows);
+  document.querySelector("#bulkInventoryRows")?.addEventListener("click", (event) => {
+    if (event.target.matches("[data-clear-bulk-row]")) {
+      clearBulkRow(event.target.closest("tr"));
+    }
+  });
   document.querySelectorAll("[data-new-record]").forEach((button) => {
     button.addEventListener("click", () => openRecordModal(button.dataset.newRecord));
   });
@@ -1138,6 +1230,143 @@ async function saveRecord(event) {
   toast(`${meta.singular} ${existing ? "updated" : "created"}.`);
 }
 
+function addBulkRows() {
+  const body = document.querySelector("#bulkInventoryRows");
+  if (!body) return;
+  const start = body.querySelectorAll("[data-bulk-row]").length;
+  body.insertAdjacentHTML("beforeend", Array.from({ length: 5 }, (_, offset) => bulkInventoryRow(start + offset)).join(""));
+}
+
+function clearBulkRow(row) {
+  if (!row) return;
+  row.querySelectorAll("input, select").forEach((field) => {
+    if (field.type === "checkbox") field.checked = false;
+    else field.value = "";
+  });
+}
+
+async function saveBulkInventory(event) {
+  event.preventDefault();
+  const rows = [...event.currentTarget.querySelectorAll("[data-bulk-row]")];
+  const timestamp = now();
+  let saved = 0;
+
+  for (const row of rows) {
+    const data = bulkRowData(row);
+    if (!data.itemName) continue;
+
+    const ingredient = await ensureIngredient(data, timestamp);
+    const source = data.sourceName ? await ensureSource(data.sourceName, timestamp) : null;
+    const inventory = {
+      id: uid("inventory"),
+      ingredientId: ingredient.id,
+      displayName: ingredient.name,
+      quantity: data.quantity === "" ? 0 : Number(data.quantity),
+      unit: data.unit || ingredient.unit || "",
+      zone: data.zone || ingredient.storageDefault || "",
+      expirationDate: data.expirationDate,
+      lowStockThreshold: data.par === "" ? Number(ingredient.lowStockDefault || 0) : Number(data.par),
+      watch: data.watch,
+      sourceId: source?.id || "",
+      vendorName: data.sourceName,
+      notes: data.notes,
+      createdAt: timestamp,
+      updatedAt: timestamp,
+      archivedAt: null
+    };
+    await put("inventory", inventory);
+    saved += 1;
+  }
+
+  if (!saved) {
+    toast("Add at least one item name before saving.");
+    return;
+  }
+
+  await loadState();
+  await logAudit("create", "inventory", "bulk", `${saved} inventory ${saved === 1 ? "item" : "items"} added in bulk`);
+  state.view = "inventory";
+  render();
+  toast(`${saved} inventory ${saved === 1 ? "item" : "items"} saved.`);
+}
+
+function bulkRowData(row) {
+  const value = (name) => row.querySelector(`[name^="${name}_"]`)?.value?.trim() || "";
+  return {
+    itemName: value("itemName"),
+    category: value("category"),
+    quantity: value("quantity"),
+    unit: value("unit"),
+    par: value("par"),
+    zone: value("zone"),
+    sourceName: value("sourceName"),
+    expirationDate: value("expirationDate"),
+    watch: Boolean(row.querySelector(`[name^="watch_"]`)?.checked),
+    notes: value("notes")
+  };
+}
+
+async function ensureIngredient(data, timestamp) {
+  const existing = state.ingredients.find((ingredient) => !ingredient.archivedAt && ingredient.name.toLowerCase() === data.itemName.toLowerCase());
+  if (existing) {
+    const updated = {
+      ...existing,
+      category: existing.category || data.category,
+      unit: existing.unit || data.unit,
+      storageDefault: existing.storageDefault || data.zone,
+      lowStockDefault: existing.lowStockDefault || data.par,
+      updatedAt: timestamp
+    };
+    await put("ingredients", updated);
+    Object.assign(existing, updated);
+    return updated;
+  }
+
+  const ingredient = {
+    id: uid("ingredients"),
+    name: data.itemName,
+    category: data.category || "Other",
+    unit: data.unit || "ea",
+    allergens: "",
+    storageDefault: data.zone || "",
+    lowStockDefault: data.par === "" ? "" : Number(data.par),
+    notes: "",
+    createdAt: timestamp,
+    updatedAt: timestamp,
+    archivedAt: null
+  };
+  await put("ingredients", ingredient);
+  state.ingredients.push(ingredient);
+  return ingredient;
+}
+
+async function ensureSource(name, timestamp) {
+  const existing = state.sources.find((source) => !source.archivedAt && source.name.toLowerCase() === name.toLowerCase());
+  if (existing) return existing;
+  const source = {
+    id: uid("sources"),
+    name,
+    type: "Other",
+    contactName: "",
+    phone: "",
+    email: "",
+    whatsapp: "",
+    website: "",
+    ports: "",
+    paymentMethods: "",
+    cashOnly: false,
+    specialties: "",
+    reliability: "",
+    notes: "Created from bulk inventory intake.",
+    createdAt: timestamp,
+    updatedAt: timestamp,
+    archivedAt: null
+  };
+  await put("sources", source);
+  state.sources.push(source);
+  return source;
+}
+
 async function archiveRecord(entityType, id) {
   const meta = ENTITIES[entityType];
   if (!meta) return;
@@ -1149,7 +1378,7 @@ async function archiveRecord(entityType, id) {
     id: uid("archive"),
     entityType,
     entityId: id,
-    label: record.name || record.title || id,
+    label: recordTitle(entityType, record),
     archivedAt: archived.archivedAt,
     snapshot: archived
   };

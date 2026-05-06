@@ -437,6 +437,74 @@ textarea {
   overflow-x: auto;
 }
 
+.bulk-panel {
+  padding: 0;
+  overflow: hidden;
+}
+
+.bulk-toolbar,
+.bulk-bottom {
+  padding: 18px;
+}
+
+.bulk-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: flex-start;
+  border-bottom: 1px solid var(--line);
+}
+
+.bulk-toolbar p {
+  margin-bottom: 0;
+}
+
+.bulk-table-wrap {
+  overflow-x: auto;
+}
+
+.bulk-table {
+  min-width: 1180px;
+}
+
+.bulk-table th,
+.bulk-table td {
+  padding: 8px;
+}
+
+.bulk-table input,
+.bulk-table select {
+  min-height: 38px;
+  padding: 7px 9px;
+}
+
+.bulk-table td:first-child input,
+.bulk-table td:nth-child(7) input,
+.bulk-table td:nth-child(10) input {
+  min-width: 180px;
+}
+
+.bulk-table td:nth-child(3) input,
+.bulk-table td:nth-child(5) input {
+  min-width: 84px;
+}
+
+.center-cell {
+  text-align: center;
+}
+
+.center-cell input {
+  width: 20px;
+  min-height: 20px;
+  height: 20px;
+  accent-color: var(--strong);
+}
+
+.bulk-bottom {
+  justify-content: flex-end;
+  border-top: 1px solid var(--line);
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

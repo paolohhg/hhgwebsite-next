@@ -1,10 +1,10 @@
-const CACHE_NAME = "paradisechefs-v4";
+const CACHE_NAME = "paradisechefs-v5";
 const APP_SHELL = [
   "/ParadiseChefs",
   "/ParadiseChefs/",
   "/ParadiseChefs/index.html",
-  "/ParadiseChefs/styles.css?v=4",
-  "/ParadiseChefs/app.js?v=4"
+  "/ParadiseChefs/styles.css?v=5",
+  "/ParadiseChefs/app.js?v=5"
 ];
 
 self.addEventListener("install", (event) => {
