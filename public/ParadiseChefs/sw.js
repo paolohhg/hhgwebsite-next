@@ -1,9 +1,10 @@
-const CACHE_NAME = "paradisechefs-v3";
+const CACHE_NAME = "paradisechefs-v4";
 const APP_SHELL = [
-  "./",
-  "./index.html",
-  "./styles.css?v=3",
-  "./app.js?v=3"
+  "/ParadiseChefs",
+  "/ParadiseChefs/",
+  "/ParadiseChefs/index.html",
+  "/ParadiseChefs/styles.css?v=4",
+  "/ParadiseChefs/app.js?v=4"
 ];
 
 self.addEventListener("install", (event) => {
@@ -30,7 +31,7 @@ self.addEventListener("fetch", (event) => {
         return response;
       })
       .catch(() => {
-        return caches.match(event.request).then((cached) => cached || caches.match("./index.html"));
+        return caches.match(event.request).then((cached) => cached || caches.match("/ParadiseChefs/index.html"));
     })
   );
 });

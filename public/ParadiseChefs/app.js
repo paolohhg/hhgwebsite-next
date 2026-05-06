@@ -344,8 +344,8 @@ function setDynamicManifest() {
   const manifest = {
     name: state.settings.appName || DEFAULT_SETTINGS.appName,
     short_name: state.settings.appName || DEFAULT_SETTINGS.appName,
-    start_url: "./index.html",
-    scope: "./",
+    start_url: "/ParadiseChefs",
+    scope: "/ParadiseChefs/",
     display: "standalone",
     background_color: "#fbfaf7",
     theme_color: state.settings.accent || DEFAULT_SETTINGS.accent,
@@ -1245,7 +1245,7 @@ function toast(message) {
 async function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) return;
   try {
-    await navigator.serviceWorker.register("./sw.js");
+    await navigator.serviceWorker.register("/ParadiseChefs/sw.js", { scope: "/ParadiseChefs/" });
   } catch (error) {
     console.warn("Service worker registration failed", error);
   }
