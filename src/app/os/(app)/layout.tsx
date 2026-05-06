@@ -6,6 +6,7 @@ import { isAllowedOsEmail } from "@/lib/os/users";
 
 const navItems = [
   { href: "/os", label: "Command Center", meta: "today / next / stale" },
+  { href: "/os/calendar", label: "Calendar", meta: "dated work" },
   { href: "/os/projects", label: "Projects", meta: "active work" },
   { href: "/os/tasks", label: "Tasks", meta: "owner load" },
   { href: "/os/assets", label: "Assets", meta: "ready to sell" },

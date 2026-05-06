@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import type { Asset, Project, Task } from "@/lib/os/types";
+import { CalendarPreview } from "../_components/calendar";
 import { EmptyState, PageHeader, Section, Stat } from "../_components/ui";
 
 type TaskWithProject = Task & {
@@ -135,6 +136,10 @@ export default async function OverviewPage() {
             ))}
           </ul>
         )}
+      </Section>
+
+      <Section label="Calendar" right={<Link href="/os/calendar">Open</Link>}>
+        <CalendarPreview tasks={tasksWithProjects} compact />
       </Section>
 
       <Section label="Next Actions" right={`${nextActions.length} active`}>

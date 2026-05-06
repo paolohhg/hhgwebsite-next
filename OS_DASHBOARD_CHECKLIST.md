@@ -33,6 +33,7 @@ Goal: make `/os` feel like the main operating home, not a collection of CRUD pag
 
 - [x] Add a current-date header with a concise operational title
 - [x] Add a "Today" band for overdue tasks, due-today tasks, and doing tasks
+- [x] Add a calendar preview for dated work
 - [x] Add a "Next Actions" band from active project `next_action` fields
 - [x] Add a "Stale Projects" band for active projects that have not been updated recently
 - [x] Add empty states that tell the user what action to take next
@@ -236,4 +237,6 @@ Start with **1. Dashboard Shell**, then **2. Shared UI Components**. Those two s
 - [ ] Recurring tasks for weekly/monthly operating routines
 - [ ] Milestones for larger projects
 - [ ] Calendar view after due-date volume justifies it
+- [x] Calendar link in sidebar
+- [x] Calendar page with month preview
 - [ ] Archive/completed-project handling
