@@ -1,5 +1,19 @@
-import { OS_USERS } from "@/lib/os/users";
 import { sendMagicLink, setUpPassword, signInWithPassword } from "./actions";
+
+const modeCopy = {
+  login: {
+    title: "Sign in",
+    body: "Use your Heard OS email and password.",
+  },
+  setup: {
+    title: "Set password",
+    body: "Use your HHG email and choose a private password.",
+  },
+  magic: {
+    title: "Magic link",
+    body: "Send a one-time link if password sign-in is not available.",
+  },
+};
 
 export default async function LoginPage({
   searchParams,
@@ -28,11 +42,12 @@ export default async function LoginPage({
       : mode === "magic"
         ? "Send Magic Link"
         : "Sign In";
+  const copy = modeCopy[mode];
 
   return (
-    <main className="min-h-screen flex items-start justify-center px-6 pt-24 pb-12">
-      <div className="w-full max-w-sm">
-        <div className="border-t-4 border-b-4 border-black py-3 mb-8">
+    <main className="min-h-screen flex items-start justify-center px-6 pt-16 pb-12 sm:pt-24">
+      <div className="w-full max-w-md">
+        <div className="border-t-4 border-b-4 border-black py-4 mb-6">
           <h1 className="font-bold uppercase tracking-wider text-base">
             Heard OS
           </h1>
@@ -42,7 +57,7 @@ export default async function LoginPage({
         </div>
 
         {sent || setup ? (
-          <div className="space-y-4">
+          <div className="border-b-2 border-black pb-5 space-y-4">
             <p className="font-bold uppercase tracking-wider text-xs">
               {setup ? "Password setup started" : "Check your email"}
             </p>
@@ -59,42 +74,40 @@ export default async function LoginPage({
             </a>
           </div>
         ) : (
-          <form action={action} className="space-y-2">
-            <div className="mb-5 flex flex-wrap gap-x-5 gap-y-2 font-bold uppercase tracking-wider text-xs">
+          <form action={action}>
+            <div className="grid grid-cols-3 border-t-2 border-l-2 border-black mb-6 font-bold uppercase tracking-wider text-[10px] sm:text-xs">
               <a
                 href="/os/login"
-                className={mode === "login" ? "underline" : "hover:underline"}
+                className={`border-r-2 border-b-2 border-black px-2 py-2 text-center ${
+                  mode === "login" ? "bg-black text-white" : "hover:underline"
+                }`}
               >
-                Password Login
+                Login
               </a>
               <a
                 href="/os/login?mode=setup"
-                className={mode === "setup" ? "underline" : "hover:underline"}
+                className={`border-r-2 border-b-2 border-black px-2 py-2 text-center ${
+                  mode === "setup" ? "bg-black text-white" : "hover:underline"
+                }`}
               >
                 Set Password
               </a>
               <a
                 href="/os/login?mode=magic"
-                className={mode === "magic" ? "underline" : "hover:underline"}
+                className={`border-r-2 border-b-2 border-black px-2 py-2 text-center ${
+                  mode === "magic" ? "bg-black text-white" : "hover:underline"
+                }`}
               >
                 Magic Link
               </a>
             </div>
 
-            {mode === "setup" ? (
-              <div className="mb-4 border-t-2 border-b-2 border-black py-3">
-                <p className="font-bold uppercase tracking-wider text-xs">
-                  Authorized accounts
-                </p>
-                <ul className="mt-2 space-y-1 font-mono text-[11px] uppercase tracking-wider">
-                  {OS_USERS.map((user) => (
-                    <li key={user.email}>
-                      {user.name}: {user.email}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
+            <div className="border-b-2 border-black pb-4 mb-4">
+              <p className="font-bold uppercase tracking-wider text-xs">
+                {copy.title}
+              </p>
+              <p className="mt-2 text-sm leading-relaxed">{copy.body}</p>
+            </div>
 
             <label className="block">
               <span className="font-bold uppercase tracking-wider text-xs">
@@ -120,7 +133,9 @@ export default async function LoginPage({
                   name="password"
                   required
                   minLength={8}
-                  autoComplete={mode === "setup" ? "new-password" : "current-password"}
+                  autoComplete={
+                    mode === "setup" ? "new-password" : "current-password"
+                  }
                   className="mt-2 w-full border-b-2 border-black bg-transparent py-2 text-base focus:outline-none"
                 />
               </label>
