@@ -21,12 +21,16 @@ export default async function LoginPage({
   searchParams: Promise<{
     error?: string;
     mode?: string;
+    password_set?: string;
+    reset?: string;
     sent?: string;
     setup?: string;
   }>;
 }) {
   const params = await searchParams;
   const mode = params.mode === "setup" || params.mode === "magic" ? params.mode : "login";
+  const passwordSet = params.password_set === "1";
+  const reset = params.reset === "1";
   const sent = params.sent === "1";
   const setup = params.setup === "1";
   const error = params.error;
@@ -56,15 +60,25 @@ export default async function LoginPage({
           </p>
         </div>
 
-        {sent || setup ? (
+        {sent || setup || passwordSet || reset ? (
           <div className="border-b-2 border-black pb-5 space-y-4">
             <p className="font-bold uppercase tracking-wider text-xs">
-              {setup ? "Password setup started" : "Check your email"}
+              {passwordSet
+                ? "Password set"
+                : reset
+                  ? "Check your email"
+                  : setup
+                    ? "Password setup started"
+                    : "Check your email"}
             </p>
             <p className="text-sm leading-relaxed">
-              {setup
-                ? "If Supabase requires email confirmation, open the confirmation email once. After that, use regular email and password sign-in."
-                : "If your address is authorized, a sign-in link has been sent. Open it on this device."}
+              {passwordSet
+                ? "Your password is ready. Go back and sign in with your HHG email."
+                : reset
+                  ? "This account already exists. Open the password reset email once, set your password there, then use regular password login."
+                  : setup
+                    ? "If Supabase requires email confirmation, open the confirmation email once. After that, use regular email and password sign-in."
+                    : "If your address is authorized, a sign-in link has been sent. Open it on this device."}
             </p>
             <a
               href="/os/login"
@@ -169,12 +183,20 @@ export default async function LoginPage({
                   ? "Access denied. This email is not authorized."
                   : error === "config"
                     ? "Dashboard configuration is missing. Check Vercel environment variables."
+                  : error === "email_not_confirmed"
+                    ? "Email is not confirmed yet. Check the confirmation email once, then sign in again."
+                  : error === "invalid_credentials"
+                    ? "Password login is not ready for this account yet, or the password is incorrect. Use Set Password first."
                   : error === "password_short"
                     ? "Password must be at least 8 characters."
                   : error === "password_mismatch"
                     ? "Passwords do not match."
                   : error === "already_registered"
                     ? "This account already exists. Use Password Login."
+                  : error === "reset_failed"
+                    ? "Password reset email could not be sent. Check Supabase auth settings."
+                  : error === "admin_failed"
+                    ? "Admin password setup failed. Check the Supabase service role key."
                   : "Sign-in failed. Try again."}
               </p>
             ) : null}

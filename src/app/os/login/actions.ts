@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { getSupabaseConfig } from "@/lib/supabase/config";
 import { isAllowedOsEmail } from "@/lib/os/users";
 
@@ -42,6 +43,13 @@ export async function signInWithPassword(formData: FormData) {
   });
 
   if (error) {
+    const message = error.message.toLowerCase();
+    if (message.includes("email not confirmed")) {
+      redirect("/os/login?error=email_not_confirmed");
+    }
+    if (message.includes("invalid login credentials")) {
+      redirect("/os/login?error=invalid_credentials");
+    }
     redirect("/os/login?error=auth_failed");
   }
 
@@ -69,9 +77,39 @@ export async function setUpPassword(formData: FormData) {
     redirect("/os/login?mode=setup&error=config");
   }
 
+  const admin = createAdminClient();
+  if (admin) {
+    const { data: usersData, error: listError } =
+      await admin.auth.admin.listUsers();
+    if (listError) {
+      redirect("/os/login?mode=setup&error=admin_failed");
+    }
+
+    const existing = usersData.users.find(
+      (user) => user.email?.toLowerCase() === email,
+    );
+
+    const { error } = existing
+      ? await admin.auth.admin.updateUserById(existing.id, {
+          password,
+          email_confirm: true,
+        })
+      : await admin.auth.admin.createUser({
+          email,
+          password,
+          email_confirm: true,
+        });
+
+    if (error) {
+      redirect("/os/login?mode=setup&error=admin_failed");
+    }
+
+    redirect("/os/login?password_set=1");
+  }
+
   const supabase = await createClient();
   const origin = await getOrigin();
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
@@ -82,9 +120,35 @@ export async function setUpPassword(formData: FormData) {
   if (error) {
     const message = error.message.toLowerCase();
     if (message.includes("already") || message.includes("registered")) {
-      redirect("/os/login?mode=setup&error=already_registered");
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(
+        email,
+        {
+          redirectTo: `${origin}/os/auth/callback?next=/os/password`,
+        },
+      );
+      if (resetError) {
+        redirect("/os/login?mode=setup&error=reset_failed");
+      }
+      redirect("/os/login?reset=1");
     }
     redirect("/os/login?mode=setup&error=auth_failed");
+  }
+
+  if (data.user?.identities && data.user.identities.length === 0) {
+    const { error: resetError } = await supabase.auth.resetPasswordForEmail(
+      email,
+      {
+        redirectTo: `${origin}/os/auth/callback?next=/os/password`,
+      },
+    );
+    if (resetError) {
+      redirect("/os/login?mode=setup&error=reset_failed");
+    }
+    redirect("/os/login?reset=1");
+  }
+
+  if (data.session) {
+    redirect("/os");
   }
 
   redirect("/os/login?setup=1");

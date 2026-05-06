@@ -5,7 +5,8 @@ import { isAllowedOsEmail } from "@/lib/os/users";
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = "/os";
+  const requestedNext = searchParams.get("next");
+  const next = requestedNext === "/os/password" ? requestedNext : "/os";
 
   if (!code) {
     return NextResponse.redirect(`${origin}/os/login?error=auth_failed`);
