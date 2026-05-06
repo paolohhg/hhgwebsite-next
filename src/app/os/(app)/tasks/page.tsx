@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import Link from "next/link";
 import {
   TASK_ASSIGNEES,
   type Project,
@@ -160,8 +161,10 @@ function TaskList({
                     isOverdue ? "font-bold" : ""
                   }`}
                 >
-                  {isOverdue ? "! " : ""}
-                  {t.title}
+                  <Link href={`/os/tasks/${t.id}`} className="hover:underline">
+                    {isOverdue ? "! " : ""}
+                    {t.title}
+                  </Link>
                 </p>
                 {proj ? (
                   <p className="text-[11px] uppercase tracking-wider truncate">

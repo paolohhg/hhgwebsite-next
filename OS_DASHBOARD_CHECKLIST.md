@@ -34,6 +34,8 @@ Goal: make `/os` feel like the main operating home, not a collection of CRUD pag
 - [x] Add a current-date header with a concise operational title
 - [x] Add a "Today" band for overdue tasks, due-today tasks, and doing tasks
 - [x] Add a calendar preview for dated work
+- [x] Add clickable calendar days for instant task creation
+- [x] Add day, week, and month calendar views
 - [x] Add a "Next Actions" band from active project `next_action` fields
 - [x] Add a "Stale Projects" band for active projects that have not been updated recently
 - [x] Add empty states that tell the user what action to take next
@@ -227,7 +229,7 @@ Start with **1. Dashboard Shell**, then **2. Shared UI Components**. Those two s
 - [ ] Priority levels for tasks and projects
 - [ ] Blocked status or blocker reason
 - [ ] Project target dates
-- [ ] Task editing
+- [x] Task editing
 - [ ] Project health
 - [ ] Last-updated/stale-work signals
 - [ ] My Tasks or owner filter
@@ -239,4 +241,5 @@ Start with **1. Dashboard Shell**, then **2. Shared UI Components**. Those two s
 - [ ] Calendar view after due-date volume justifies it
 - [x] Calendar link in sidebar
 - [x] Calendar page with month preview
+- [x] Calendar task links to comprehensive task edit page
 - [ ] Archive/completed-project handling

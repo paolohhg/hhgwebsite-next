@@ -139,7 +139,7 @@ export default async function OverviewPage() {
       </Section>
 
       <Section label="Calendar" right={<Link href="/os/calendar">Open</Link>}>
-        <CalendarPreview tasks={tasksWithProjects} compact />
+        <CalendarPreview tasks={tasksWithProjects} compact view="month" />
       </Section>
 
       <Section label="Next Actions" right={`${nextActions.length} active`}>
