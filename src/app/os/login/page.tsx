@@ -22,6 +22,7 @@ export default async function LoginPage({
     error?: string;
     mode?: string;
     password_set?: string;
+    password_link?: string;
     reset?: string;
     sent?: string;
     setup?: string;
@@ -29,6 +30,7 @@ export default async function LoginPage({
 }) {
   const params = await searchParams;
   const mode = params.mode === "setup" || params.mode === "magic" ? params.mode : "login";
+  const passwordLink = params.password_link === "1";
   const passwordSet = params.password_set === "1";
   const reset = params.reset === "1";
   const sent = params.sent === "1";
@@ -60,12 +62,12 @@ export default async function LoginPage({
           </p>
         </div>
 
-        {sent || setup || passwordSet || reset ? (
+        {sent || setup || passwordSet || passwordLink || reset ? (
           <div className="border-b-2 border-black pb-5 space-y-4">
             <p className="font-bold uppercase tracking-wider text-xs">
               {passwordSet
                 ? "Password set"
-                : reset
+                : passwordLink || reset
                   ? "Check your email"
                   : setup
                     ? "Password setup started"
@@ -74,8 +76,8 @@ export default async function LoginPage({
             <p className="text-sm leading-relaxed">
               {passwordSet
                 ? "Your password is ready. Go back and sign in with your HHG email."
-                : reset
-                  ? "This account already exists. Open the password reset email once, set your password there, then use regular password login."
+                : passwordLink || reset
+                  ? "Open the Heard OS email once. It will sign you in and send you to the password page."
                   : setup
                     ? "If Supabase requires email confirmation, open the confirmation email once. After that, use regular email and password sign-in."
                     : "If your address is authorized, a sign-in link has been sent. Open it on this device."}
@@ -195,6 +197,8 @@ export default async function LoginPage({
                     ? "This account already exists. Use Password Login."
                   : error === "reset_failed"
                     ? "Password reset email could not be sent. Check Supabase auth settings."
+                  : error === "password_link_failed"
+                    ? "Password setup link could not be sent. Try Magic Link, then open /os/password."
                   : error === "admin_failed"
                     ? "Admin password setup failed. Check the Supabase service role key."
                   : "Sign-in failed. Try again."}

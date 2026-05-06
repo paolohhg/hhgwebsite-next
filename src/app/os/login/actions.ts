@@ -120,31 +120,33 @@ export async function setUpPassword(formData: FormData) {
   if (error) {
     const message = error.message.toLowerCase();
     if (message.includes("already") || message.includes("registered")) {
-      const { error: resetError } = await supabase.auth.resetPasswordForEmail(
+      const { error: linkError } = await supabase.auth.signInWithOtp({
         email,
-        {
-          redirectTo: `${origin}/os/auth/callback?next=/os/password`,
+        options: {
+          emailRedirectTo: `${origin}/os/auth/callback?next=/os/password`,
+          shouldCreateUser: false,
         },
-      );
-      if (resetError) {
-        redirect("/os/login?mode=setup&error=reset_failed");
+      });
+      if (linkError) {
+        redirect("/os/login?mode=setup&error=password_link_failed");
       }
-      redirect("/os/login?reset=1");
+      redirect("/os/login?password_link=1");
     }
     redirect("/os/login?mode=setup&error=auth_failed");
   }
 
   if (data.user?.identities && data.user.identities.length === 0) {
-    const { error: resetError } = await supabase.auth.resetPasswordForEmail(
+    const { error: linkError } = await supabase.auth.signInWithOtp({
       email,
-      {
-        redirectTo: `${origin}/os/auth/callback?next=/os/password`,
+      options: {
+        emailRedirectTo: `${origin}/os/auth/callback?next=/os/password`,
+        shouldCreateUser: false,
       },
-    );
-    if (resetError) {
-      redirect("/os/login?mode=setup&error=reset_failed");
+    });
+    if (linkError) {
+      redirect("/os/login?mode=setup&error=password_link_failed");
     }
-    redirect("/os/login?reset=1");
+    redirect("/os/login?password_link=1");
   }
 
   if (data.session) {
