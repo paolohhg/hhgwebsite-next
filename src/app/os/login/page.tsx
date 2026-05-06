@@ -62,6 +62,8 @@ export default async function LoginPage({
               <p className="font-bold uppercase tracking-wider text-xs pt-3">
                 {error === "not_allowed"
                   ? "Access denied. This email is not authorized."
+                  : error === "config"
+                    ? "Dashboard configuration is missing. Check Vercel environment variables."
                   : "Sign-in failed. Try again."}
               </p>
             ) : null}

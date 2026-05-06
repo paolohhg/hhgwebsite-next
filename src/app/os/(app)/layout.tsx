@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "./actions";
+import { isAllowedOsEmail } from "@/lib/os/users";
 
 export default async function AppLayout({
   children,
@@ -14,11 +15,7 @@ export default async function AppLayout({
   } = await supabase.auth.getUser();
   if (!user) redirect("/os/login");
 
-  const allowlist = (process.env.ALLOWED_EMAILS || "")
-    .split(",")
-    .map((e) => e.trim().toLowerCase())
-    .filter(Boolean);
-  if (!user.email || !allowlist.includes(user.email.toLowerCase())) {
+  if (!user.email || !isAllowedOsEmail(user.email)) {
     await supabase.auth.signOut();
     redirect("/os/login?error=not_allowed");
   }

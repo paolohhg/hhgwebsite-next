@@ -15,7 +15,16 @@ Each item has: what it is, why it matters, the rollback note (where applicable),
 
 ## P0 — blocking
 
-*(None at this time. Site is live, both apps function, custom domain serves correctly.)*
+### 1. Make `/os` the primary project management dashboard
+**Why:** Paolo identified the dashboard as the priority project. `/os` already has projects, tasks, assets, and an overview, but it needs a structured component-by-component build plan before expanding.
+**Plan:** Use `OS_DASHBOARD_CHECKLIST.md` as the working checklist. Build in this order: dashboard shell, shared UI components, project components, task components, asset components, data model pass, user/access components, verification pass.
+**Acceptance:**
+- [ ] `/os` home clearly answers what needs attention today
+- [ ] Shared UI components reduce repeated row/form markup
+- [ ] Projects become the backbone of the PM workflow
+- [ ] Tasks are fast to update on mobile and desktop
+- [ ] Assets surface ready-to-sell inventory on the home dashboard
+**Rollback:** per-component revert; schema changes require paired rollback SQL before application.
 
 ---
 

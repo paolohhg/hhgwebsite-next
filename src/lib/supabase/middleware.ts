@@ -1,12 +1,29 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { getSupabaseConfig } from "./config";
+import { isAllowedOsEmail } from "@/lib/os/users";
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
+  const { pathname } = request.nextUrl;
+  const isLogin = pathname === "/os/login";
+  const isAuthRoute = pathname.startsWith("/os/auth");
+  const config = getSupabaseConfig();
+
+  if (!config) {
+    if (!isLogin && !isAuthRoute) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/os/login";
+      url.search = "?error=config";
+      return NextResponse.redirect(url);
+    }
+
+    return response;
+  }
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    config.url,
+    config.anonKey,
     {
       cookies: {
         getAll() {
@@ -30,10 +47,6 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { pathname } = request.nextUrl;
-  const isLogin = pathname === "/os/login";
-  const isAuthRoute = pathname.startsWith("/os/auth");
-
   if (!isLogin && !isAuthRoute && !user) {
     const url = request.nextUrl.clone();
     url.pathname = "/os/login";
@@ -42,11 +55,7 @@ export async function updateSession(request: NextRequest) {
   }
 
   if (isLogin && user) {
-    const allowlist = (process.env.ALLOWED_EMAILS || "")
-      .split(",")
-      .map((e) => e.trim().toLowerCase())
-      .filter(Boolean);
-    if (user.email && allowlist.includes(user.email.toLowerCase())) {
+    if (user.email && isAllowedOsEmail(user.email)) {
       const url = request.nextUrl.clone();
       url.pathname = "/os";
       url.search = "";

@@ -1,5 +1,33 @@
 import type { ReactNode } from "react";
 
+export function PageHeader({
+  title,
+  eyebrow,
+  right,
+}: {
+  title: string;
+  eyebrow?: ReactNode;
+  right?: ReactNode;
+}) {
+  return (
+    <div className="border-t-4 border-b-4 border-black py-3 mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <h1 className="font-bold uppercase tracking-wider text-base">
+          {title}
+        </h1>
+        {eyebrow ? (
+          <p className="text-xs uppercase tracking-wider mt-1">{eyebrow}</p>
+        ) : null}
+      </div>
+      {right ? (
+        <div className="font-mono tabular-nums text-xs uppercase tracking-wider">
+          {right}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 export function Section({
   label,
   right,
@@ -21,6 +49,14 @@ export function Section({
       </div>
       {children}
     </section>
+  );
+}
+
+export function EmptyState({ children }: { children: ReactNode }) {
+  return (
+    <p className="border-b border-black/30 py-3 text-sm leading-relaxed">
+      {children}
+    </p>
   );
 }
 

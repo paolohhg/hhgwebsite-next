@@ -3,23 +3,21 @@
 import { createClient } from "@/lib/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-
-function isAllowed(email: string) {
-  const allowlist = (process.env.ALLOWED_EMAILS || "")
-    .split(",")
-    .map((e) => e.trim().toLowerCase())
-    .filter(Boolean);
-  return allowlist.includes(email.toLowerCase());
-}
+import { getSupabaseConfig } from "@/lib/supabase/config";
+import { isAllowedOsEmail } from "@/lib/os/users";
 
 export async function sendMagicLink(formData: FormData) {
   const email = String(formData.get("email") || "")
     .trim()
     .toLowerCase();
 
-  if (!email || !isAllowed(email)) {
+  if (!email || !isAllowedOsEmail(email)) {
     // Don't reveal which addresses are authorized; show the same "sent" state.
     redirect("/os/login?sent=1");
+  }
+
+  if (!getSupabaseConfig()) {
+    redirect("/os/login?error=config");
   }
 
   const supabase = await createClient();

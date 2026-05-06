@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
+import { isAllowedOsEmail } from "@/lib/os/users";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -20,12 +21,7 @@ export async function GET(request: Request) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const allowlist = (process.env.ALLOWED_EMAILS || "")
-    .split(",")
-    .map((e) => e.trim().toLowerCase())
-    .filter(Boolean);
-
-  if (!user?.email || !allowlist.includes(user.email.toLowerCase())) {
+  if (!user?.email || !isAllowedOsEmail(user.email)) {
     await supabase.auth.signOut();
     return NextResponse.redirect(`${origin}/os/login?error=not_allowed`);
   }
