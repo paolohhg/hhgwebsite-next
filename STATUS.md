@@ -114,6 +114,7 @@ Dark theme via CSS variables in `src/app/globals.css`. Tailwind config maps sema
 | Theme | White/black nutrition-label aesthetic — overrides marketing dark theme inside the `/os` layout. Inter + JetBrains Mono via `next/font/google` (scoped). |
 | Database | Supabase project `qzsvzwilefxmltogdnym.supabase.co` |
 | Tables | `projects`, `tasks`, `assets` — RLS enabled, `auth read/write` policies for `authenticated` role only |
+| User guide | `docs/os-project-manager-guide.md` |
 
 ### Routes
 
@@ -185,6 +186,8 @@ Row Level Security is enabled on all three tables. Policies grant SELECT/ALL to 
 
 | Commit | Summary |
 |---|---|
+| `pending` | Add Heard OS project manager user guide |
+| `300dc39` | Document Heard OS schema next steps |
 | `e25eebe` | Heard OS: shared PM UI components, project quick tasks, task owner filters, inline asset edit |
 | `f0c6994` | Make Heard OS dashboard stats clickable |
 | `dc8bbe8` | Use magic link for Heard OS password setup |

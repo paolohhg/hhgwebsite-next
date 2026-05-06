@@ -13,6 +13,8 @@ Build plan for `/os` as the primary HHG project management dashboard. Work one c
 
 The dashboard should stay private, mobile-usable, and operational. Avoid marketing copy inside `/os`; every screen should help Paolo or Mel make a decision or update the source of truth.
 
+User guide: `docs/os-project-manager-guide.md`
+
 ## Existing Foundation
 
 - [x] Private `/os` route group with noindex metadata
