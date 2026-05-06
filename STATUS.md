@@ -185,7 +185,7 @@ Row Level Security is enabled on all three tables. Policies grant SELECT/ALL to 
 
 | Commit | Summary |
 |---|---|
-| `pending` | Heard OS: shared PM UI components, project quick tasks, task owner filters, inline asset edit |
+| `e25eebe` | Heard OS: shared PM UI components, project quick tasks, task owner filters, inline asset edit |
 | `f0c6994` | Make Heard OS dashboard stats clickable |
 | `dc8bbe8` | Use magic link for Heard OS password setup |
 | `fe8fadb` | SEO: dynamic sitemap, add canonicals to /contract-forge and /heard-os |

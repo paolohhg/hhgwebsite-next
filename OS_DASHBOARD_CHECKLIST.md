@@ -110,9 +110,9 @@ Goal: make tasks fast enough for daily use on phone or desktop.
 - [ ] Add `priority`: urgent, high, normal, low
 - [ ] Add `blocked_reason`
 - [ ] Add `updated_at` or equivalent last-touched signal
-- [ ] Add due-today and overdue styling without adding pills/badges
+- [x] Add due-today and overdue styling without adding pills/badges
 - [x] Add project filter or owner filter if the list becomes long
-- [ ] Add edit task support, not only create/toggle/delete
+- [x] Add edit task support, not only create/toggle/delete
 - [x] Add quick assignment switching between Paolo and Mel
 - [x] Confirm tap targets are at least 40px on mobile
 
@@ -139,7 +139,7 @@ Goal: make assets useful as sellable/productized inventory, not just a list.
 - [x] Add an asset detail/edit view if notes and links become important
 - [ ] Add status-change history only if needed after daily use
 - [x] Make Drive links easy to open while preserving private posture
-- [ ] Surface ready-to-sell assets on `/os` overview
+- [x] Surface ready-to-sell assets on `/os` overview
 
 Primary files:
 
@@ -150,7 +150,7 @@ Primary files:
 
 Acceptance:
 
-- [ ] Ready-to-sell assets are visible from the home dashboard
+- [x] Ready-to-sell assets are visible from the home dashboard
 - [x] Asset status can be changed quickly and confidently
 - [ ] Asset fields reflect actual HHG inventory language
 
@@ -161,7 +161,7 @@ Goal: adjust the schema only after the UI proves which fields matter.
 - [ ] Add project fields: `priority`, `health`, `start_date`, `target_date`, `blocked_reason`
 - [ ] Add task fields: `priority`, `blocked_reason`, `updated_at`
 - [ ] Add asset fields after workflow validation: `owner`, `price`, `customer`, `last_reviewed_at`
-- [ ] Write forward and rollback SQL before applying schema changes
+- [x] Write forward and rollback SQL before applying schema changes
 - [ ] Update `src/lib/os/types.ts` and all affected forms together
 
 Primary files:
@@ -174,7 +174,7 @@ Acceptance:
 
 - [ ] Every new field has a visible use in the UI
 - [ ] No schema-only fields are added "just in case"
-- [ ] Rollback SQL exists for every schema change
+- [x] Rollback SQL exists for every schema change
 
 ### 7. User Components and Access
 
@@ -231,15 +231,15 @@ Start with **1. Dashboard Shell**, then **2. Shared UI Components**. Those two s
 - [ ] Project target dates
 - [x] Task editing
 - [ ] Project health
-- [ ] Last-updated/stale-work signals
+- [x] Last-updated/stale-work signals
 - [x] My Tasks or owner filter
 - [ ] Search and filters once lists grow
 - [ ] Comments or update log after the single notes field proves insufficient
 - [ ] Attachments or links on projects and tasks
 - [ ] Recurring tasks for weekly/monthly operating routines
 - [ ] Milestones for larger projects
-- [ ] Calendar view after due-date volume justifies it
+- [x] Calendar view after due-date volume justifies it
 - [x] Calendar link in sidebar
 - [x] Calendar page with month preview
 - [x] Calendar task links to comprehensive task edit page
-- [ ] Archive/completed-project handling
+- [x] Archive/completed-project handling
