@@ -11,5 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/hospitality-ai-consulting`, lastModified: now, priority: 0.8, changeFrequency: "monthly" },
     { url: `${BASE}/heard-os`, lastModified: now, priority: 0.7, changeFrequency: "monthly" },
     { url: `${BASE}/contract-forge`, lastModified: now, priority: 0.7, changeFrequency: "monthly" },
+    { url: `${BASE}/privacy-policy`, lastModified: now, priority: 0.3, changeFrequency: "yearly" },
+    { url: `${BASE}/terms-of-service`, lastModified: now, priority: 0.3, changeFrequency: "yearly" },
   ];
 }

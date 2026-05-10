@@ -10,6 +10,8 @@ const links = [
   { label: "Heard OS", href: "/heard-os" },
   { label: "ContractForge", href: "/contract-forge" },
   { label: "Contact", href: "/#contact" },
+  { label: "Privacy", href: "/privacy-policy" },
+  { label: "Terms", href: "/terms-of-service" },
 ];
 
 export default function Footer() {
