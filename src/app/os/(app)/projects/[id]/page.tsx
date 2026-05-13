@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import {
@@ -25,6 +26,29 @@ import { createTask } from "../../tasks/actions";
 
 const TASK_ORDER = ["doing", "open", "done"] as const;
 
+function buildProjectEmailHref(project: Project, projectUrl: string) {
+  const subject = `Project update: ${project.name}`;
+  const body = [
+    `Project: ${project.name}`,
+    `Brand: ${project.brand}`,
+    `Status: ${project.status}`,
+    `Owner: ${project.owner}`,
+    project.revenue_tier ? `Revenue tier: ${project.revenue_tier}` : null,
+    "",
+    "Next action:",
+    project.next_action || "-",
+    "",
+    project.description ? `Description:\n${project.description}` : null,
+    project.notes ? `Notes:\n${project.notes}` : null,
+    "",
+    `Project link: ${projectUrl}`,
+  ].filter((line) => line !== null);
+
+  return `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+    body.join("\n"),
+  )}`;
+}
+
 export default async function ProjectDetailPage({
   params,
 }: {
@@ -45,6 +69,11 @@ export default async function ProjectDetailPage({
   if (projectRes.error || !projectRes.data) notFound();
   const project = projectRes.data as Project;
   const tasks = (tasksRes.data ?? []) as Task[];
+  const headerList = await headers();
+  const host = headerList.get("host") ?? "heardhospitalitygroup.com";
+  const protocol = headerList.get("x-forwarded-proto") ?? "https";
+  const projectUrl = `${protocol}://${host}/os/projects/${project.id}`;
+  const projectEmailHref = buildProjectEmailHref(project, projectUrl);
   const tasksByStatus = TASK_ORDER.map((status) => ({
     status,
     items: tasks.filter((task) => task.status === status),
@@ -101,6 +130,18 @@ export default async function ProjectDetailPage({
               enough context for a quick decision.
             </p>
           ) : null}
+          <div className="pt-2">
+            <a
+              href={projectEmailHref}
+              className="inline-block border-y-2 border-black px-3 py-2 font-bold uppercase tracking-wider text-xs hover:bg-black hover:text-white"
+            >
+              Email Project Update
+            </a>
+            <p className="mt-2 text-[11px] uppercase tracking-wider leading-relaxed">
+              Opens the email app or browser mail handler configured on this
+              device.
+            </p>
+          </div>
         </div>
       </Section>
 

@@ -63,10 +63,13 @@ Project fields:
 Use project detail pages to:
 
 - Read the current state before editing.
+- Compose a project update email from the current summary.
 - Add a quick task tied to the project.
 - Scan linked tasks by status.
 - Update the next action.
 - Move dormant or shipped work out of the active pile.
+
+The Email Project Update button uses the device or browser email handler. If Gmail is the user's default handler, it opens Gmail; if Apple Mail, Outlook, or another app is the default, it opens that instead.
 
 Project status rules:
 
