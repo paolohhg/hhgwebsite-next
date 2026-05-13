@@ -94,6 +94,35 @@ export async function toggleTaskStatus(id: string, current: TaskStatus) {
   revalidatePath("/os");
 }
 
+export async function completeTask(id: string) {
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("tasks")
+    .update({
+      status: "done",
+      completed_at: new Date().toISOString(),
+    })
+    .eq("id", id);
+  if (error) throw new Error(error.message);
+  revalidatePath("/os/tasks");
+  revalidatePath("/os/calendar");
+  revalidatePath("/os");
+}
+
+export async function setTaskDueDate(id: string, formData: FormData) {
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("tasks")
+    .update({
+      due_date: str(formData.get("due_date")),
+    })
+    .eq("id", id);
+  if (error) throw new Error(error.message);
+  revalidatePath("/os/tasks");
+  revalidatePath("/os/calendar");
+  revalidatePath("/os");
+}
+
 export async function setTaskAssignee(id: string, assignee: string) {
   const supabase = await createClient();
   const { error } = await supabase

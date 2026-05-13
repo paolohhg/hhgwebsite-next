@@ -244,4 +244,5 @@ Start with **1. Dashboard Shell**, then **2. Shared UI Components**. Those two s
 - [x] Calendar link in sidebar
 - [x] Calendar page with month preview
 - [x] Calendar task links to comprehensive task edit page
+- [ ] Google Calendar sync for dated Heard OS tasks (deferred)
 - [x] Archive/completed-project handling

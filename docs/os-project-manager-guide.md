@@ -147,6 +147,8 @@ Calendar views:
 
 Click a day to add a task quickly. Open the task detail page when it needs full context.
 
+Google Calendar integration is planned but deferred. Heard OS should remain the source of truth until the integration is built. The recommended future version is one-way sync from dated Heard OS tasks into the Heard Hospitality Group Google Calendar before attempting two-way sync.
+
 ### Assets
 
 Use Assets for sellable, reusable, or packaged inventory.
@@ -264,6 +266,7 @@ These are planned but not fully wired into production:
 - Milestones.
 - Comments or update log.
 - Attachments beyond URL fields.
+- Heard Hospitality Group Google Calendar sync.
 
 The schema plan is in `docs/os-dashboard-schema-plan.sql`. Apply those database changes before building UI that writes to those new fields.
 

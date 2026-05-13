@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { Asset, Project, Task } from "@/lib/os/types";
 import { CalendarPreview } from "../_components/calendar";
 import { EmptyState, PageHeader, Section, Stat } from "../_components/ui";
+import { completeTask, deleteTask, setTaskDueDate } from "./tasks/actions";
 
 type TaskWithProject = Task & {
   projectName?: string;
@@ -37,8 +38,9 @@ function TaskRow({
   const isDueToday = task.due_date === today;
 
   return (
-    <li className="border-b border-black/30 py-3 flex items-start justify-between gap-4">
-      <div className="min-w-0 flex-1">
+    <li className="border-b border-black/30 py-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0 flex-1">
         <p
           className={`text-sm truncate ${
             isOverdue || isDueToday || task.status === "doing" ? "font-bold" : ""
@@ -46,19 +48,62 @@ function TaskRow({
         >
           {isOverdue ? "! " : ""}
           {task.status === "doing" ? "◐ " : "○ "}
-          {task.title}
+          <Link href={`/os/tasks/${task.id}`} className="hover:underline">
+            {task.title}
+          </Link>
         </p>
         {task.projectName ? (
           <p className="text-[11px] uppercase tracking-wider truncate">
             {task.projectName}
           </p>
         ) : null}
+        </div>
+        <span className="font-mono tabular-nums text-xs whitespace-nowrap text-left sm:text-right">
+          {task.assignee}
+          <br />
+          {formatDate(task.due_date)}
+        </span>
       </div>
-      <span className="font-mono tabular-nums text-xs whitespace-nowrap text-right">
-        {task.assignee}
-        <br />
-        {formatDate(task.due_date)}
-      </span>
+      <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-end">
+        <form action={completeTask.bind(null, task.id)}>
+          <button
+            type="submit"
+            className="min-h-10 w-full border-y-2 border-black px-3 py-2 text-left font-bold uppercase tracking-wider text-xs hover:bg-black hover:text-white sm:w-auto"
+          >
+            Completed
+          </button>
+        </form>
+        <form
+          action={setTaskDueDate.bind(null, task.id)}
+          className="flex min-h-10 flex-1 items-end gap-2 sm:max-w-xs"
+        >
+          <label className="min-w-0 flex-1">
+            <span className="font-bold uppercase tracking-wider text-[10px]">
+              Move Due Date
+            </span>
+            <input
+              type="date"
+              name="due_date"
+              defaultValue={task.due_date ?? today}
+              className="mt-1 w-full border-b-2 border-black bg-transparent py-1.5 text-sm focus:outline-none"
+            />
+          </label>
+          <button
+            type="submit"
+            className="min-h-10 border-y-2 border-black px-3 py-2 font-bold uppercase tracking-wider text-xs hover:bg-black hover:text-white"
+          >
+            Move
+          </button>
+        </form>
+        <form action={deleteTask.bind(null, task.id)}>
+          <button
+            type="submit"
+            className="min-h-10 w-full px-1 py-2 font-bold uppercase tracking-wider text-xs underline hover:no-underline sm:w-auto"
+          >
+            Delete
+          </button>
+        </form>
+      </div>
     </li>
   );
 }
