@@ -69,7 +69,7 @@ Use project detail pages to:
 - Update the next action.
 - Move dormant or shipped work out of the active pile.
 
-The Email Project Update button uses the device or browser email handler. If Gmail is the user's default handler, it opens Gmail; if Apple Mail, Outlook, or another app is the default, it opens that instead.
+The Email Project Update button opens Gmail compose directly in a new browser tab with the project summary prefilled. It does not use the device's default mail client, so Outlook or Apple Mail should not intercept it.
 
 Project status rules:
 

@@ -26,7 +26,7 @@ import { createTask } from "../../tasks/actions";
 
 const TASK_ORDER = ["doing", "open", "done"] as const;
 
-function buildProjectEmailHref(project: Project, projectUrl: string) {
+function buildProjectGmailHref(project: Project, projectUrl: string) {
   const subject = `Project update: ${project.name}`;
   const body = [
     `Project: ${project.name}`,
@@ -44,9 +44,14 @@ function buildProjectEmailHref(project: Project, projectUrl: string) {
     `Project link: ${projectUrl}`,
   ].filter((line) => line !== null);
 
-  return `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-    body.join("\n"),
-  )}`;
+  const params = new URLSearchParams({
+    view: "cm",
+    fs: "1",
+    su: subject,
+    body: body.join("\n"),
+  });
+
+  return `https://mail.google.com/mail/?${params.toString()}`;
 }
 
 export default async function ProjectDetailPage({
@@ -73,7 +78,7 @@ export default async function ProjectDetailPage({
   const host = headerList.get("host") ?? "heardhospitalitygroup.com";
   const protocol = headerList.get("x-forwarded-proto") ?? "https";
   const projectUrl = `${protocol}://${host}/os/projects/${project.id}`;
-  const projectEmailHref = buildProjectEmailHref(project, projectUrl);
+  const projectEmailHref = buildProjectGmailHref(project, projectUrl);
   const tasksByStatus = TASK_ORDER.map((status) => ({
     status,
     items: tasks.filter((task) => task.status === status),
@@ -133,13 +138,15 @@ export default async function ProjectDetailPage({
           <div className="pt-2">
             <a
               href={projectEmailHref}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-block border-y-2 border-black px-3 py-2 font-bold uppercase tracking-wider text-xs hover:bg-black hover:text-white"
             >
-              Email Project Update
+              Email Project Update in Gmail
             </a>
             <p className="mt-2 text-[11px] uppercase tracking-wider leading-relaxed">
-              Opens the email app or browser mail handler configured on this
-              device.
+              Opens Gmail compose in a new tab with this project summary
+              prefilled.
             </p>
           </div>
         </div>
