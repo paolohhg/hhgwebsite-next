@@ -26,7 +26,11 @@ import { createTask } from "../../tasks/actions";
 
 const TASK_ORDER = ["doing", "open", "done"] as const;
 
-function buildProjectGmailHref(project: Project, projectUrl: string) {
+function buildProjectGmailHref(
+  project: Project,
+  projectUrl: string,
+  gmailAccount: string,
+) {
   const subject = `Project update: ${project.name}`;
   const body = [
     `Project: ${project.name}`,
@@ -45,6 +49,7 @@ function buildProjectGmailHref(project: Project, projectUrl: string) {
   ].filter((line) => line !== null);
 
   const params = new URLSearchParams({
+    authuser: gmailAccount,
     view: "cm",
     fs: "1",
     su: subject,
@@ -61,7 +66,7 @@ export default async function ProjectDetailPage({
 }) {
   const { id } = await params;
   const supabase = await createClient();
-  const [projectRes, tasksRes] = await Promise.all([
+  const [projectRes, tasksRes, userRes] = await Promise.all([
     supabase.from("projects").select("*").eq("id", id).single(),
     supabase
       .from("tasks")
@@ -69,6 +74,7 @@ export default async function ProjectDetailPage({
       .eq("project_id", id)
       .order("status", { ascending: true })
       .order("due_date", { ascending: true, nullsFirst: false }),
+    supabase.auth.getUser(),
   ]);
 
   if (projectRes.error || !projectRes.data) notFound();
@@ -78,7 +84,12 @@ export default async function ProjectDetailPage({
   const host = headerList.get("host") ?? "heardhospitalitygroup.com";
   const protocol = headerList.get("x-forwarded-proto") ?? "https";
   const projectUrl = `${protocol}://${host}/os/projects/${project.id}`;
-  const projectEmailHref = buildProjectGmailHref(project, projectUrl);
+  const gmailAccount = userRes.data.user?.email ?? "";
+  const projectEmailHref = buildProjectGmailHref(
+    project,
+    projectUrl,
+    gmailAccount,
+  );
   const tasksByStatus = TASK_ORDER.map((status) => ({
     status,
     items: tasks.filter((task) => task.status === status),
@@ -145,8 +156,8 @@ export default async function ProjectDetailPage({
               Email Project Update in Gmail
             </a>
             <p className="mt-2 text-[11px] uppercase tracking-wider leading-relaxed">
-              Opens Gmail compose in a new tab with this project summary
-              prefilled.
+              Opens Gmail compose as {gmailAccount || "the signed-in Heard OS account"} with this
+              project summary prefilled.
             </p>
           </div>
         </div>
