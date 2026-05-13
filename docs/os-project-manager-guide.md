@@ -63,13 +63,13 @@ Project fields:
 Use project detail pages to:
 
 - Read the current state before editing.
-- Compose a project update email from the current summary.
+- Compose a blank Gmail email from the confirmed Heard OS Gmail account.
 - Add a quick task tied to the project.
 - Scan linked tasks by status.
 - Update the next action.
 - Move dormant or shipped work out of the active pile.
 
-The Email Project Update button opens Gmail compose directly in a new browser tab with the project summary prefilled. It targets the signed-in Heard OS email address and shows that address beside the button so the sender account is explicit. It does not use the device's default mail client, so Outlook or Apple Mail should not intercept it.
+The Email Project Update button opens a blank Gmail compose window directly in a new browser tab. It targets the signed-in Heard OS email address and shows that address beside the button so the sender account is explicit. It does not use the device's default mail client, so Outlook or Apple Mail should not intercept it.
 
 Project status rules:
 
