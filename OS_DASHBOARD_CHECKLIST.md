@@ -1,4 +1,4 @@
-# Heard OS Dashboard Checklist
+# Heard PM Dashboard Checklist
 
 Build plan for `/os` as the primary HHG project management dashboard. Work one component at a time, in the order below, so the app becomes useful before it becomes broad.
 
@@ -14,6 +14,10 @@ Build plan for `/os` as the primary HHG project management dashboard. Work one c
 The dashboard should stay private, mobile-usable, and operational. Avoid marketing copy inside `/os`; every screen should help Paolo or Mel make a decision or update the source of truth.
 
 User guide: `docs/os-project-manager-guide.md`
+
+Naming note: the private project management dashboard is now framed as
+**Heard PM**. Public-facing `/heard-os` links and marketing language stay as-is
+until the PM project is solidified.
 
 ## Existing Foundation
 
@@ -244,5 +248,5 @@ Start with **1. Dashboard Shell**, then **2. Shared UI Components**. Those two s
 - [x] Calendar link in sidebar
 - [x] Calendar page with month preview
 - [x] Calendar task links to comprehensive task edit page
-- [ ] Google Calendar sync for dated Heard OS tasks (deferred)
+- [ ] Google Calendar sync for dated Heard PM tasks (deferred)
 - [x] Archive/completed-project handling

@@ -13,7 +13,7 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Heard OS",
+  title: "Heard PM",
   robots: { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } },
 };
 

@@ -36,7 +36,7 @@ export default async function AppLayout({
             href="/os"
             className="font-bold uppercase tracking-wider text-sm"
           >
-            Heard OS
+            Heard PM
           </Link>
           <p className="mt-2 font-mono text-[10px] uppercase tracking-wider break-all">
             {user.email}
@@ -88,7 +88,7 @@ export default async function AppLayout({
               href="/os"
               className="font-bold uppercase tracking-wider text-sm"
             >
-              Heard OS
+              Heard PM
             </Link>
             <span className="font-mono text-xs truncate">{user.email}</span>
           </div>

@@ -45,7 +45,7 @@ Three product surfaces in one Next.js app:
 |---|---|---|
 | Marketing site | `/`, `/about-…`, `/ai-revenue-systems`, `/hospitality-ai-consulting`, `/heard-os` | Public-facing HHG marketing pages. Dark theme. |
 | ContractForge | `/contract-forge` (UI) + `/api/contractforge/generate` (server route) | Public AI-powered contract generator. Calls Anthropic via server proxy. |
-| Heard OS dashboard | `/os/*` | Private internal dashboard for Paolo + Mel. Magic-link auth, email allowlist, Supabase backend, white/black nutrition-label aesthetic. Middleware-gated, noindex, robots Disallow. |
+| Heard PM dashboard | `/os/*` | Private internal dashboard for Paolo + Mel. Magic-link auth, email allowlist, Supabase backend, white/black nutrition-label aesthetic. Middleware-gated, noindex, robots Disallow. |
 
 All three coexist under the same Next.js app. Marketing pages use the dark `bg-deep-gradient` theme; `/os` lives in its own light-theme world via `src/app/os/layout.tsx`.
 

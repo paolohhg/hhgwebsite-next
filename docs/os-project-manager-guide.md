@@ -1,12 +1,12 @@
-# Heard OS Project Manager Guide
+# Heard PM Guide
 
-Heard OS lives at `/os`. It is the private project management dashboard for Heard Hospitality Group work: projects, tasks, calendar commitments, and sellable assets.
+Heard PM lives at `/os`. It is the private project management dashboard for Heard Hospitality Group work: projects, tasks, calendar commitments, and sellable assets.
 
 Use this guide as the operating manual for what to put where, when to update it, and how Paolo and Chef Mel should read the dashboard.
 
 ## Operating Principle
 
-Heard OS should answer four questions fast:
+Heard PM should answer four questions fast:
 
 - What needs attention today?
 - Which projects are active, blocked, or drifting?
@@ -63,13 +63,13 @@ Project fields:
 Use project detail pages to:
 
 - Read the current state before editing.
-- Compose a blank Gmail email from the confirmed Heard OS Gmail account.
+- Compose a blank Gmail email from the confirmed Heard PM Gmail account.
 - Add a quick task tied to the project.
 - Scan linked tasks by status.
 - Update the next action.
 - Move dormant or shipped work out of the active pile.
 
-The Email Project Update button opens a blank Gmail compose window directly in a new browser tab. It targets the signed-in Heard OS email address and shows that address beside the button so the sender account is explicit. It does not use the device's default mail client, so Outlook or Apple Mail should not intercept it.
+The Email Project Update button opens a blank Gmail compose window directly in a new browser tab. It targets the signed-in Heard PM email address and shows that address beside the button so the sender account is explicit. It does not use the device's default mail client, so Outlook or Apple Mail should not intercept it.
 
 Project status rules:
 
@@ -150,7 +150,7 @@ Calendar views:
 
 Click a day to add a task quickly. Open the task detail page when it needs full context.
 
-Google Calendar integration is planned but deferred. Heard OS should remain the source of truth until the integration is built. The recommended future version is one-way sync from dated Heard OS tasks into the Heard Hospitality Group Google Calendar before attempting two-way sync.
+Google Calendar integration is planned but deferred. Heard PM should remain the source of truth until the integration is built. The recommended future version is one-way sync from dated Heard PM tasks into the Heard Hospitality Group Google Calendar before attempting two-way sync.
 
 ### Assets
 
@@ -277,7 +277,7 @@ The schema plan is in `docs/os-dashboard-schema-plan.sql`. Apply those database 
 
 ### Access
 
-Heard OS is private. Only allowlisted emails should be able to log in. Paolo and Chef Mel are the first intended users.
+Heard PM is private. Only allowlisted emails should be able to log in. Paolo and Chef Mel are the first intended users.
 
 ### Password Setup
 
@@ -289,7 +289,7 @@ The dashboard is designed to be usable on phone width. Use mobile for checking, 
 
 ### Data Source Of Truth
 
-If work belongs in Heard OS, update Heard OS. Avoid keeping a second conflicting list in chat, notes, or memory.
+If work belongs in Heard PM, update Heard PM. Avoid keeping a second conflicting list in chat, notes, or memory.
 
 ### When Something Looks Wrong
 

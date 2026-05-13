@@ -125,7 +125,7 @@ export default async function ProjectDetailPage({
             </a>
             <p className="mt-2 text-[11px] uppercase tracking-wider leading-relaxed">
               Opens a blank Gmail compose window as{" "}
-              {gmailAccount || "the signed-in Heard OS account"}.
+              {gmailAccount || "the signed-in Heard PM account"}.
             </p>
           </div>
         </div>

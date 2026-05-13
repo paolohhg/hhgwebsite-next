@@ -1,4 +1,4 @@
--- Heard OS dashboard schema plan
+-- Heard PM dashboard schema plan
 -- Apply only after reviewing the current MVP screens. These fields are already
 -- represented in the product checklist, but should not be added until the UI is
 -- ready to use each one immediately.

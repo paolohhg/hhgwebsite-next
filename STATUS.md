@@ -2,7 +2,7 @@
 
 Snapshot of "what's live right now." Update this file whenever runtime state changes.
 
-**Last updated:** 2026-05-06 (Heard OS PM dashboard hardening pass)
+**Last updated:** 2026-05-13 (private dashboard reframed as Heard PM)
 **Live URL:** https://heardhospitalitygroup.com
 **Production deploy:** see `vercel ls hhgwebsite-next | head -3`
 
@@ -14,7 +14,7 @@ Snapshot of "what's live right now." Update this file whenever runtime state cha
 |---|---|---|
 | Marketing site | ✅ Live | All 6 pages serving. SEO baseline in place; per-page OG metadata + OG image still pending (see `ROADMAP.md`). |
 | ContractForge | ✅ Live | Model: `claude-haiku-4-5`. End-to-end smoke-tested. |
-| Heard OS dashboard (`/os`) | ⚠️ Live, in active MVP review | Password login/setup, calendar, clickable dashboard stats, project quick tasks, task filters, and asset edits are implemented. Mel has not signed in / validated yet. |
+| Heard PM dashboard (`/os`) | ⚠️ Live, in active MVP review | Password login/setup, calendar, clickable dashboard stats, project quick tasks, task filters, and asset edits are implemented. Mel has not signed in / validated yet. |
 | Hosting | ✅ Vercel `hhgwebsite-next` | Custom domain attached, DNS resolving. |
 | Old repo cleanup | ⚠️ Partially done | Local emptied, Vercel projects deleted. GitHub repo `paolohhg/stability-grid-pro` still exists — pending manual delete via web UI. |
 
@@ -102,7 +102,7 @@ Dark theme via CSS variables in `src/app/globals.css`. Tailwind config maps sema
 
 ---
 
-## Heard OS dashboard (`/os`)
+## Heard PM dashboard (`/os`)
 
 | Item | Value |
 |---|---|
@@ -186,11 +186,11 @@ Row Level Security is enabled on all three tables. Policies grant SELECT/ALL to 
 
 | Commit | Summary |
 |---|---|
-| `pending` | Add Heard OS project manager user guide |
-| `300dc39` | Document Heard OS schema next steps |
-| `e25eebe` | Heard OS: shared PM UI components, project quick tasks, task owner filters, inline asset edit |
-| `f0c6994` | Make Heard OS dashboard stats clickable |
-| `dc8bbe8` | Use magic link for Heard OS password setup |
+| `pending` | Reframe private `/os` dashboard as Heard PM |
+| `300dc39` | Document Heard PM schema next steps |
+| `e25eebe` | Heard PM: shared PM UI components, project quick tasks, task owner filters, inline asset edit |
+| `f0c6994` | Make Heard PM dashboard stats clickable |
+| `dc8bbe8` | Use magic link for Heard PM password setup |
 | `fe8fadb` | SEO: dynamic sitemap, add canonicals to /contract-forge and /heard-os |
 | `d1d794c` | ContractForge: swap Sonnet 4.6 → Haiku 4.5 |
 | `abae81a` | ContractForge: raise function timeout to 300s, cap output at 4000 tokens |

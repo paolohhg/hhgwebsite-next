@@ -12,7 +12,7 @@ export default async function PasswordPage({
     <div>
       <PageHeader
         title="Set Password"
-        eyebrow="Choose a password for regular Heard OS login"
+        eyebrow="Choose a password for regular Heard PM login"
       />
 
       <Section label="Password">

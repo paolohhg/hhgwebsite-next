@@ -3,7 +3,7 @@ import { sendMagicLink, setUpPassword, signInWithPassword } from "./actions";
 const modeCopy = {
   login: {
     title: "Sign in",
-    body: "Use your Heard OS email and password.",
+    body: "Use your Heard PM email and password.",
   },
   setup: {
     title: "Set password",
@@ -55,7 +55,7 @@ export default async function LoginPage({
       <div className="w-full max-w-md">
         <div className="border-t-4 border-b-4 border-black py-4 mb-6">
           <h1 className="font-bold uppercase tracking-wider text-base">
-            Heard OS
+            Heard PM
           </h1>
           <p className="text-xs uppercase tracking-wider mt-1">
             Private. Authorized access only.
@@ -77,7 +77,7 @@ export default async function LoginPage({
               {passwordSet
                 ? "Your password is ready. Go back and sign in with your HHG email."
                 : passwordLink || reset
-                  ? "Open the Heard OS email once. It will sign you in and send you to the password page."
+                  ? "Open the Heard PM email once. It will sign you in and send you to the password page."
                   : setup
                     ? "If Supabase requires email confirmation, open the confirmation email once. After that, use regular email and password sign-in."
                     : "If your address is authorized, a sign-in link has been sent. Open it on this device."}
